@@ -1,5 +1,8 @@
 use std::fs::File;
 use std::io::{self, BufRead};
+
+// Puzzle at : https://adventofcode.com/2024/day/1
+
 fn main() {
     // Setup
     let path = "./src/data.txt";
