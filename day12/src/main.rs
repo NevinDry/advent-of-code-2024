@@ -2,6 +2,14 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+enum Direction {
+    Right,
+    Down,
+    Left,
+    Up,
+}
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -10,6 +18,9 @@ fn main() {
     // first star
     let region = get_regions(&mut input, false);
     println!("First star: {}", region);
+
+    let region = get_regions(&mut input, true);
+    println!("Second star: {}", region);
 }
 
 fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
@@ -25,86 +36,159 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
             }
         }
     }
-    println!("regions: {:?}", regions);
     if is_discounted {
-        for mut region in &mut regions {
-            region.1 = 0;
-            for plant in &region.2 {
-                if region.2.contains(&(plant.0, plant.1 - 1))
-                    && region.2.contains(&(plant.0 + 1, plant.1 - 1))
-                    && !region.2.contains(&(plant.0 + 1, plant.1))
-                    && !region.2.contains(&(plant.0, plant.1 + 1))
-                {
-                    region.1 += 1;
-                    println!("coucou plant8: {:?}", plant);
-                }
-                if region.2.contains(&(plant.0, plant.1 + 1))
-                    && region.2.contains(&(plant.0 + 1, plant.1 + 1))
-                    && !region.2.contains(&(plant.0 + 1, plant.1))
-                    && !region.2.contains(&(plant.0, plant.1 - 1))
-                {
-                    region.1 += 1;
-                    println!("coucou plant7: {:?}", plant);
-                }
-                if region.2.contains(&(plant.0 + 1, plant.1 + 1))
-                    && region.2.contains(&(plant.0, plant.1 + 1))
-                    && !region.2.contains(&(plant.0 - 1, plant.1))
-                    && !region.2.contains(&(plant.0, plant.1 - 1))
-                    && plant.1 - 1 > region.2[0].1
-                {
-                    region.1 += 1;
-                    println!("coucou plant6: {:?}", plant);
-                }
-                if region.2.contains(&(plant.0 + 1, plant.1))
-                    && region.2.contains(&(plant.0 + 1, plant.1 - 1))
-                    && !region.2.contains(&(plant.0, plant.1 - 1))
-                {
-                    region.1 += 1;
-                    println!("coucou plant9: {:?}", plant);
+        for region in &mut regions {
+            let mut fences: Vec<((i32, i32), Direction)> = vec![];
+            for plant in region.2.iter() {
+                if !region.2.contains(&(plant.0.saturating_sub(1), plant.1)) {
+                    let mut has_fence = false;
+
+                    if plant.1 > 0 {
+                        let mut x = (0..=plant.1 as i32 - 1).rev();
+                        while let Some(x) = x.next() {
+                            if !region.2.contains(&(plant.0, x))
+                                || (region.2.contains(&(plant.0, x))
+                                    && region.2.contains(&(plant.0.saturating_sub(1), x)))
+                            {
+                                break;
+                            } else if fences.contains(&((plant.0, x), Direction::Up)) {
+                                has_fence = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    let mut x = (plant.1 + 1)..(input.len() as i32);
+                    while let Some(x) = x.next() {
+                        if !region.2.contains(&(plant.0, x))
+                            || (region.2.contains(&(plant.0, x))
+                                && region.2.contains(&(plant.0.saturating_sub(1), x)))
+                        {
+                            break;
+                        } else if fences.contains(&((plant.0, x), Direction::Up)) {
+                            has_fence = true;
+                            break;
+                        }
+                    }
+
+                    if !has_fence {
+                        fences.push((*plant, Direction::Up));
+                    }
                 }
 
-                if region.2.contains(&(plant.0 - 1, plant.1 - 1))
-                    && region.2.contains(&(plant.0, plant.1 - 1))
-                    && !region.2.contains(&(plant.0 - 1, plant.1))
-                    && plant.0 - 1 != -1
-                {
-                    region.1 += 1;
-                    println!("coucou plant5: {:?}", plant);
+                if !region.2.contains(&(plant.0 + 1, plant.1)) {
+                    let mut has_fence = false;
+
+                    if plant.1 > 0 {
+                        let mut x = (0..=plant.1 as i32 - 1).rev();
+                        while let Some(x) = x.next() {
+                            if !region.2.contains(&(plant.0, x))
+                                || (region.2.contains(&(plant.0, x))
+                                    && region.2.contains(&(plant.0.saturating_add(1), x)))
+                            {
+                                break;
+                            } else if fences.contains(&((plant.0, x), Direction::Down)) {
+                                has_fence = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    let mut x = (plant.1 + 1)..(input.len() as i32);
+                    while let Some(x) = x.next() {
+                        if !region.2.contains(&(plant.0, x))
+                            || (region.2.contains(&(plant.0, x))
+                                && region.2.contains(&(plant.0.saturating_add(1), x)))
+                        {
+                            break;
+                        } else if fences.contains(&((plant.0, x), Direction::Down)) {
+                            has_fence = true;
+                            break;
+                        }
+                    }
+
+                    if !has_fence {
+                        fences.push((*plant, Direction::Down));
+                    }
                 }
 
-                if !region.2.contains(&(plant.0, plant.1 + 1))
-                    && !region.2.contains(&(plant.0 - 1, plant.1))
-                {
-                    println!("coucou plant1: {:?}", plant);
+                if !region.2.contains(&(plant.0, plant.1.saturating_sub(1))) {
+                    let mut has_fence = false;
 
-                    region.1 += 1;
+                    if plant.0 > 0 {
+                        let mut x = (0..=plant.0 - 1).rev();
+                        while let Some(x) = x.next() {
+                            if !region.2.contains(&(x, plant.1))
+                                || (region.2.contains(&(x, plant.1))
+                                    && region.2.contains(&(x, plant.1.saturating_sub(1))))
+                            {
+                                break;
+                            } else if fences.contains(&((x, plant.1), Direction::Left)) {
+                                has_fence = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    let mut x = (plant.0 + 1)..(input.len() as i32);
+                    while let Some(x) = x.next() {
+                        if !region.2.contains(&(x, plant.1))
+                            || (region.2.contains(&(x, plant.1))
+                                && region.2.contains(&(x, plant.1.saturating_sub(1))))
+                        {
+                            break;
+                        } else if fences.contains(&((x, plant.1), Direction::Left)) {
+                            has_fence = true;
+                            break;
+                        }
+                    }
+
+                    if !has_fence {
+                        fences.push((*plant, Direction::Left));
+                    }
                 }
 
-                if !region.2.contains(&(plant.0, plant.1 - 1))
-                    && !region.2.contains(&(plant.0 - 1, plant.1))
-                {
-                    println!("coucou plant4: {:?}", plant);
+                if !region.2.contains(&(plant.0, plant.1 + 1)) {
+                    let mut has_fence = false;
 
-                    region.1 += 1;
-                }
-                if !region.2.contains(&(plant.0, plant.1 - 1))
-                    && !region.2.contains(&(plant.0 + 1, plant.1))
-                {
-                    println!("coucou plant3: {:?}", plant);
+                    if plant.0 > 0 {
+                        let mut x = (0..=plant.0 - 1).rev();
+                        while let Some(x) = x.next() {
+                            if !region.2.contains(&(x, plant.1))
+                                || (region.2.contains(&(x, plant.1))
+                                    && region.2.contains(&(x, plant.1.saturating_add(1))))
+                            {
+                                break;
+                            } else if fences.contains(&((x, plant.1), Direction::Right)) {
+                                has_fence = true;
+                                break;
+                            }
+                        }
+                    }
 
-                    region.1 += 1;
-                }
+                    let mut x = (plant.0 + 1)..(input.len() as i32);
+                    while let Some(x) = x.next() {
+                        if !region.2.contains(&(x, plant.1))
+                            || (region.2.contains(&(x, plant.1))
+                                && region.2.contains(&(x, plant.1.saturating_add(1))))
+                        {
+                            break;
+                        } else if fences.contains(&((x, plant.1), Direction::Right)) {
+                            has_fence = true;
+                            break;
+                        }
+                    }
 
-                if !region.2.contains(&(plant.0, plant.1 + 1))
-                    && !region.2.contains(&(plant.0 + 1, plant.1))
-                {
-                    println!("coucou plant2: {:?}", plant);
-                    region.1 += 1;
+                    if !has_fence {
+                        fences.push((*plant, Direction::Right));
+                    }
                 }
             }
-            println!("region: {:?}", region);
+
+            region.1 = fences.len() as i32;
         }
     }
+
     regions.iter().map(|region| region.0 * region.1).sum()
 }
 
@@ -266,6 +350,19 @@ mod tests {
     }
 
     #[test]
+    fn test_complex_edge_easier_with_discount() {
+        let mut input = vec![
+            vec!['R', 'R', 'R', 'I'],
+            vec!['R', 'R', 'R', 'A'],
+            vec!['B', 'R', 'R', 'R'],
+            vec!['A', 'R', 'C', 'A'],
+        ];
+
+        let regions = super::get_regions(&mut input, true);
+        assert_eq!(regions, 124);
+    }
+
+    #[test]
     fn test_complex_edge_with_discount() {
         let mut input = vec![
             vec!['R', 'R', 'R', 'R', 'I'],
@@ -295,17 +392,31 @@ mod tests {
     }
 
     #[test]
-    fn test_complex_cmre_with_discount() {
+    fn test_complex_v_with_discount() {
         let mut input = vec![
-            vec!['e', 'l', 'p', 'C', 'C', 'C'],
-            vec!['d', 'h', 'C', 'C', 'b', 'g'],
-            vec!['C', 'C', 'C', 'v', 'z', 'l'],
-            vec!['w', 'C', 'J', 'b', 'w', 'm'],
-            vec!['V', 'C', 'C', 'n', 'o', 'p'],
+            vec!['V', 'V', 'a', 'z'],
+            vec!['V', 'V', 'R', 'C'],
+            vec!['V', 'V', 'V', 'V'],
+            vec!['V', 'V', 'u', 'V'],
+            vec!['V', 'V', 'o', 'I'],
         ];
-
         let regions = super::get_regions(&mut input, true);
-        assert_eq!(regions, 274);
+        assert_eq!(regions, 158);
+    }
+
+    #[test]
+    fn test_complex_j_with_discount() {
+        let mut input = vec![
+            vec!['C', 'J', 'F'],
+            vec!['J', 'J', 'C'],
+            vec!['r', 'J', 'J'],
+            vec!['b', 'J', 'J'],
+            vec!['I', 'J', 'J'],
+            vec!['q', 'J', 'E'],
+            vec!['S', 'J', 'o'],
+        ];
+        let regions = super::get_regions(&mut input, true);
+        assert_eq!(regions, 172);
     }
 
     #[test]
