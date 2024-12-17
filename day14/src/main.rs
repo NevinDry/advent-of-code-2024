@@ -1,6 +1,5 @@
-use std::collections::HashSet;
 use std::fs::File;
-use std::io::{self, BufRead, Error};
+use std::io::{self, BufRead};
 
 #[derive(Debug)]
 struct Robot {
@@ -20,19 +19,22 @@ fn main() {
     let mut robots = get_robots_from_file(&file);
     assert_eq!(robots.len(), 500);
 
-    // first star
+    // first and second star
     let answer = move_robots(&mut robots, (101, 103));
     println!("Answer 1: {:?}", answer);
 }
 
-fn move_robots(robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
-    for i in 0..100 {
+fn move_robots(mut robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
+    for i in 0..10000 {
         for robot in &mut *robots {
             move_robot(robot, frame);
         }
+        if robots_are_aligned(&mut robots, frame) {
+            print_robots(robots, frame);
+            println!("Answer 2: {}", i + 1);
+            break;
+        }
     }
-
-    println!("{:?}", robots);
 
     get_robots_sum_in_quadrant(robots, get_quadrant(frame))
 }
@@ -121,6 +123,44 @@ fn get_robots_from_file(file: &File) -> Vec<Robot> {
     robots
 }
 
+fn robots_are_aligned(robots: &mut Vec<Robot>, frame: (i32, i32)) -> bool {
+    let mut positions = std::collections::HashSet::new();
+    for robot in robots.iter() {
+        positions.insert(robot.position);
+    }
+
+    for y in 0..frame.1 {
+        let mut robot_in_a_row_count = 0;
+        for x in 0..frame.0 {
+            if positions.contains(&(x, y)) && positions.contains(&(x + 1, y)) {
+                robot_in_a_row_count += 1;
+            } else {
+                robot_in_a_row_count = 0;
+            }
+            if robot_in_a_row_count > 8 {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+fn print_robots(robots: &Vec<Robot>, frame: (i32, i32)) -> () {
+    let mut grid = vec![vec!['.'; frame.0 as usize]; frame.1 as usize];
+    for robot in robots.iter() {
+        let (x, y) = robot.position;
+        if x < frame.0 && y < frame.1 {
+            grid[y as usize][x as usize] = '*';
+        }
+    }
+
+    for row in grid.iter() {
+        for cell in row.iter() {
+            print!("{}", cell);
+        }
+        println!();
+    }
+}
 #[cfg(test)]
 mod tests {
     use crate::Robot;
