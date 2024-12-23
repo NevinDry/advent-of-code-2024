@@ -1,6 +1,5 @@
 use std::fs::File;
 use std::io::{self, BufRead};
-use std::vec;
 
 fn main() {
     let path = "./src/data.txt";
