@@ -46,20 +46,35 @@ fn main() {
 }
 
 fn find_compute(register_a: i64, register_b: i64, register_c: i64, program: Vec<usize>) -> i64 {
-    let to_find = program
-        .iter()
-        .map(|x| x.to_string())
-        .collect::<Vec<String>>()
-        .join(",");
+    let target_output: Vec<String> = program.iter().map(|x| x.to_string()).collect();
+    let mut coefficients = vec![0; program.len()];
 
-    for i in 0..1_000_000_000_000i64 {
-        let res = compute(register_a + i, register_b, register_c, &program);
-        if res == *to_find {
-            return i + register_a;
-        } else {
-            println!("NOP {:?}", res);
+    loop {
+        let register_a = coefficients
+            .iter()
+            .enumerate()
+            .fold(0, |acc: i64, (i, &factor)| {
+                acc + 8i64.pow(i as u32) * factor
+            });
+
+        let compute_result = compute(register_a, register_b, register_c, &program);
+        let output: Vec<&str> = compute_result.split(',').collect();
+        if output == target_output {
+            return register_a;
+        }
+        let mut incremented = false;
+        for i in (0..coefficients.len()).rev() {
+            if i >= output.len() || output[i] != target_output[i] {
+                coefficients[i] += 1;
+                incremented = true;
+                break;
+            }
+        }
+        if !incremented {
+            break;
         }
     }
+
     0
 }
 
