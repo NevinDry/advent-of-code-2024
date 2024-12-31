@@ -18,12 +18,12 @@ fn main() {
 
     // second star
     let mut breaker = (0, 0);
-    for i in 12..initial_bytes_fallen.len() {
-        bytes_fallen.push(initial_bytes_fallen[i]);
+    for item in initial_bytes_fallen.iter().skip(12) {
+        bytes_fallen.push(item.clone());
         let grid = create_grid(&bytes_fallen, 71);
         let answer = find_way_out(&grid);
         if answer.1 == false {
-            breaker = initial_bytes_fallen[i];
+            breaker = item.clone();
             break;
         }
     }
@@ -31,7 +31,7 @@ fn main() {
     println!("Answer 2: {:?}", breaker);
 }
 
-fn find_way_out(grid: &Vec<Vec<char>>) -> (usize, bool) {
+fn find_way_out(grid: &[Vec<char>]) -> (usize, bool) {
     let mut cache = vec![vec![false; grid.len()]; grid.len()];
     let mut queue = vec![];
     let mut moves = 0;

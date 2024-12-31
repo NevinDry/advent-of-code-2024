@@ -28,7 +28,6 @@ fn try_keys(
             {
                 continue;
             } else {
-                println!("Key: {:?} Lock: {:?}", key, lock);
                 result += 1;
             }
         }

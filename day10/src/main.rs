@@ -80,7 +80,6 @@ fn find_head_score(
             return;
         }
     }
-    return;
 }
 
 fn find_all_trails_score(input: &Vec<Vec<usize>>, trails_head: Vec<(usize, usize)>) -> i32 {
@@ -143,7 +142,7 @@ fn find_all_head_score(input: &Vec<Vec<usize>>, y: usize, x: usize) -> i32 {
     score
 }
 
-fn test_get_trailheads(input: &Vec<Vec<usize>>) -> Vec<(usize, usize)> {
+fn test_get_trailheads(input: &[Vec<usize>]) -> Vec<(usize, usize)> {
     input
         .iter()
         .enumerate()

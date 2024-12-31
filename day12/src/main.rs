@@ -1,3 +1,4 @@
+use std::collections::hash_map::Entry::Vacant;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -44,8 +45,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                     let mut has_fence = false;
 
                     if plant.1 > 0 {
-                        let mut x = (0..=plant.1 as i32 - 1).rev();
-                        while let Some(x) = x.next() {
+                        let x = (0..=plant.1 - 1).rev();
+                        for x in x {
                             if !region.2.contains(&(plant.0, x))
                                 || (region.2.contains(&(plant.0, x))
                                     && region.2.contains(&(plant.0.saturating_sub(1), x)))
@@ -58,8 +59,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                         }
                     }
 
-                    let mut x = (plant.1 + 1)..(input.len() as i32);
-                    while let Some(x) = x.next() {
+                    let x = (plant.1 + 1)..(input.len() as i32);
+                    for x in x {
                         if !region.2.contains(&(plant.0, x))
                             || (region.2.contains(&(plant.0, x))
                                 && region.2.contains(&(plant.0.saturating_sub(1), x)))
@@ -80,8 +81,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                     let mut has_fence = false;
 
                     if plant.1 > 0 {
-                        let mut x = (0..=plant.1 as i32 - 1).rev();
-                        while let Some(x) = x.next() {
+                        let x = (0..=plant.1 - 1).rev();
+                        for x in x {
                             if !region.2.contains(&(plant.0, x))
                                 || (region.2.contains(&(plant.0, x))
                                     && region.2.contains(&(plant.0.saturating_add(1), x)))
@@ -94,8 +95,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                         }
                     }
 
-                    let mut x = (plant.1 + 1)..(input.len() as i32);
-                    while let Some(x) = x.next() {
+                    let x = (plant.1 + 1)..(input.len() as i32);
+                    for x in x {
                         if !region.2.contains(&(plant.0, x))
                             || (region.2.contains(&(plant.0, x))
                                 && region.2.contains(&(plant.0.saturating_add(1), x)))
@@ -116,8 +117,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                     let mut has_fence = false;
 
                     if plant.0 > 0 {
-                        let mut x = (0..=plant.0 - 1).rev();
-                        while let Some(x) = x.next() {
+                        let x = (0..=plant.0 - 1).rev();
+                        for x in x {
                             if !region.2.contains(&(x, plant.1))
                                 || (region.2.contains(&(x, plant.1))
                                     && region.2.contains(&(x, plant.1.saturating_sub(1))))
@@ -130,8 +131,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                         }
                     }
 
-                    let mut x = (plant.0 + 1)..(input.len() as i32);
-                    while let Some(x) = x.next() {
+                    let x = (plant.0 + 1)..(input.len() as i32);
+                    for x in x {
                         if !region.2.contains(&(x, plant.1))
                             || (region.2.contains(&(x, plant.1))
                                 && region.2.contains(&(x, plant.1.saturating_sub(1))))
@@ -152,8 +153,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                     let mut has_fence = false;
 
                     if plant.0 > 0 {
-                        let mut x = (0..=plant.0 - 1).rev();
-                        while let Some(x) = x.next() {
+                        let x = (0..=plant.0 - 1).rev();
+                        for x in x {
                             if !region.2.contains(&(x, plant.1))
                                 || (region.2.contains(&(x, plant.1))
                                     && region.2.contains(&(x, plant.1.saturating_add(1))))
@@ -166,8 +167,8 @@ fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {
                         }
                     }
 
-                    let mut x = (plant.0 + 1)..(input.len() as i32);
-                    while let Some(x) = x.next() {
+                    let x = (plant.0 + 1)..(input.len() as i32);
+                    for x in x {
                         if !region.2.contains(&(x, plant.1))
                             || (region.2.contains(&(x, plant.1))
                                 && region.2.contains(&(x, plant.1.saturating_add(1))))
@@ -200,12 +201,12 @@ fn get_region(
     plants: &mut HashMap<(usize, usize), char>,
 ) -> (i32, i32, Vec<(i32, i32)>) {
     let current: char = input[y][x];
-    if plants.contains_key(&(y, x)) {
-        return region;
-    } else {
-        plants.insert((y, x), current);
+    if let Vacant(e) = plants.entry((y, x)) {
+        e.insert(current);
         region.2.push((y as i32, x as i32));
         region.0 += 1;
+    } else {
+        return region;
     }
     let mut fence_count = 4;
     if x < input[y].len() - 1 {
@@ -243,8 +244,8 @@ fn get_region(
             }
         }
     }
-    region.1 = region.1 + fence_count;
-    return region;
+    region.1 += fence_count;
+    region
 }
 
 fn get_input_from_file(file: &File) -> Vec<Vec<char>> {

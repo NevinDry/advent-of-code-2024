@@ -22,26 +22,25 @@ fn main() {
     println!("Second star answer : {:?}", answer);
 }
 
-fn find_3_sets<'a>(input: HashSet<(String, String)>) -> Vec<(String, String, String)> {
+fn find_3_sets(input: HashSet<(String, String)>) -> Vec<(String, String, String)> {
     let mut result = Vec::new();
     for a in &input {
         for b in &input {
-            if a.0 == b.1 {
-                if input.contains(&(a.1.clone(), b.0.clone()))
-                    || input.contains(&(b.0.clone(), a.1.clone()))
-                {
-                    if result.iter().any(|(x, y, z): &(String, String, String)| {
-                        (x == &a.0 && y == &a.1 && z == &b.0)
-                            || (x == &a.0 && y == &b.0 && z == &a.1)
-                            || (x == &a.1 && y == &a.0 && z == &b.0)
-                            || (x == &a.1 && y == &b.0 && z == &a.0)
-                            || (x == &b.0 && y == &a.0 && z == &a.1)
-                            || (x == &b.0 && y == &a.1 && z == &a.0)
-                    }) {
-                        continue;
-                    }
-                    result.push((a.0.clone(), a.1.clone(), b.0.clone()));
+            if a.0 == b.1
+                && (input.contains(&(a.1.clone(), b.0.clone()))
+                    || input.contains(&(b.0.clone(), a.1.clone())))
+            {
+                if result.iter().any(|(x, y, z): &(String, String, String)| {
+                    (x == &a.0 && y == &a.1 && z == &b.0)
+                        || (x == &a.0 && y == &b.0 && z == &a.1)
+                        || (x == &a.1 && y == &a.0 && z == &b.0)
+                        || (x == &a.1 && y == &b.0 && z == &a.0)
+                        || (x == &b.0 && y == &a.0 && z == &a.1)
+                        || (x == &b.0 && y == &a.1 && z == &a.0)
+                }) {
+                    continue;
                 }
+                result.push((a.0.clone(), a.1.clone(), b.0.clone()));
             }
         }
     }
@@ -54,14 +53,8 @@ fn find_password(
 ) -> String {
     let mut combinaisons: HashMap<String, HashSet<String>> = HashMap::new();
     for (a, b) in input.iter() {
-        combinaisons
-            .entry(a.clone())
-            .or_insert_with(HashSet::new)
-            .insert(b.clone());
-        combinaisons
-            .entry(b.clone())
-            .or_insert_with(HashSet::new)
-            .insert(a.clone());
+        combinaisons.entry(a.clone()).or_default().insert(b.clone());
+        combinaisons.entry(b.clone()).or_default().insert(a.clone());
     }
     let mut max_networks = HashSet::new();
 

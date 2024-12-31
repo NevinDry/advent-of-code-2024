@@ -29,7 +29,7 @@ fn move_robots(mut robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
         for robot in &mut *robots {
             move_robot(robot, frame);
         }
-        if robots_are_aligned(&mut robots, frame) {
+        if robots_are_aligned(robots, frame) {
             print_robots(robots, frame);
             println!("Answer 2: {}", i + 1);
             break;
@@ -45,7 +45,7 @@ fn move_robot(robot: &mut Robot, frame: (i32, i32)) -> () {
     } else if robot.position.1 + robot.velocity.1 > frame.1 - 1 {
         robot.position.1 = (robot.position.1 + robot.velocity.1) - frame.1;
     } else {
-        robot.position.1 = robot.position.1 + robot.velocity.1;
+        robot.position.1 += robot.velocity.1
     }
 
     if robot.position.0 + robot.velocity.0 > frame.0 - 1 {
@@ -53,7 +53,7 @@ fn move_robot(robot: &mut Robot, frame: (i32, i32)) -> () {
     } else if robot.position.0 + robot.velocity.0 < 0 {
         robot.position.0 = (frame.0 + robot.position.0) + robot.velocity.0;
     } else {
-        robot.position.0 = robot.position.0 + robot.velocity.0;
+        robot.position.0 += robot.velocity.0
     }
 }
 
@@ -79,7 +79,7 @@ fn get_robots_sum_in_quadrant(robots: &Vec<Robot>, quadrant: Vec<Quadrant>) -> i
 fn get_quadrant(frame: (i32, i32)) -> Vec<Quadrant> {
     let quadrant_x_size = (frame.0 - 1) / 2;
     let quadrant_y_size = (frame.1 - 1) / 2;
-    return vec![
+    vec![
         Quadrant {
             x: (0, quadrant_x_size - 1),
             y: (0, quadrant_y_size - 1),
@@ -96,7 +96,7 @@ fn get_quadrant(frame: (i32, i32)) -> Vec<Quadrant> {
             x: (quadrant_x_size + 1, frame.0 - 1),
             y: (quadrant_y_size + 1, frame.1 - 1),
         },
-    ];
+    ]
 }
 
 fn get_robots_from_file(file: &File) -> Vec<Robot> {
@@ -123,7 +123,7 @@ fn get_robots_from_file(file: &File) -> Vec<Robot> {
     robots
 }
 
-fn robots_are_aligned(robots: &mut Vec<Robot>, frame: (i32, i32)) -> bool {
+fn robots_are_aligned(robots: &mut [Robot], frame: (i32, i32)) -> bool {
     let mut positions = std::collections::HashSet::new();
     for robot in robots.iter() {
         positions.insert(robot.position);
@@ -145,7 +145,7 @@ fn robots_are_aligned(robots: &mut Vec<Robot>, frame: (i32, i32)) -> bool {
     false
 }
 
-fn print_robots(robots: &Vec<Robot>, frame: (i32, i32)) -> () {
+fn print_robots(robots: &[Robot], frame: (i32, i32)) {
     let mut grid = vec![vec!['.'; frame.0 as usize]; frame.1 as usize];
     for robot in robots.iter() {
         let (x, y) = robot.position;
