@@ -8,7 +8,7 @@ fn main() {
     let (patterns, available_colors) = get_input_from_file(&file);
     // first star
     let mut answer = 0;
-    let mut cache: &mut HashMap<String, bool> = &mut HashMap::new();
+    let cache: &mut HashMap<String, bool> = &mut HashMap::new();
     for pattern in patterns.clone() {
         let mut available_colors_cloned = available_colors.clone();
         let possible = can_form_pattern(pattern, &mut available_colors_cloned, cache);
@@ -20,7 +20,7 @@ fn main() {
 
     // second star
     let mut answer = 0;
-    let mut cache: &mut HashMap<String, usize> = &mut HashMap::new();
+    let cache: &mut HashMap<String, usize> = &mut HashMap::new();
     for pattern in patterns {
         let mut available_colors_cloned = available_colors.clone();
         let possibilities = pattern_possibilities(pattern, &mut available_colors_cloned, cache);
@@ -43,15 +43,13 @@ fn can_form_pattern(
     }
     for index in 0..available_colors.len() {
         let color = &available_colors[index];
-        if pattern.starts_with(color) {
-            if can_form_pattern(
+        if pattern.starts_with(color) && can_form_pattern(
                 pattern.strip_prefix(color).unwrap().to_string(),
                 available_colors,
                 cache,
             ) {
-                cache.insert(pattern.to_string(), true);
-                return true;
-            }
+            cache.insert(pattern.to_string(), true);
+            return true;
         }
     }
     cache.insert(pattern.to_string(), false);
@@ -132,7 +130,7 @@ mod tests {
         ];
 
         let mut result = 0;
-        let mut cache: &mut HashMap<String, bool> = &mut HashMap::new();
+        let cache: &mut HashMap<String, bool> = &mut HashMap::new();
         for pattern in patterns {
             let mut available_colors_cloned = available_colors.clone();
             let possible = can_form_pattern(pattern, &mut available_colors_cloned, cache);

@@ -21,7 +21,7 @@ fn get_tokens_price(input: &mut Vec<Vec<(i128, i128)>>, is_large: bool) -> i128 
         if is_large {
             tokens_price += get_tokens_price_for_large_game(game);
         } else {
-            tokens_price += get_tokens_price_for_game(&game);
+            tokens_price += get_tokens_price_for_game(game);
         }
     }
 
@@ -46,12 +46,10 @@ fn get_tokens_price_for_game(game: &Vec<(i128, i128)>) -> i128 {
                 potential_x = Some(x);
             }
         }
-        if potential_x.is_some() {
-            if a.1 * potential_x.unwrap() + b.1 * y == target.1 {
-                min_y = Some(y);
-                min_x = potential_x.unwrap();
-                break;
-            }
+        if potential_x.is_some() && a.1 * potential_x.unwrap() + b.1 * y == target.1 {
+            min_y = Some(y);
+            min_x = potential_x.unwrap();
+            break;
         }
 
         y += 1;
@@ -62,9 +60,9 @@ fn get_tokens_price_for_game(game: &Vec<(i128, i128)>) -> i128 {
     }
 
     if let Some(y) = min_y {
-        return (y * 1) + (min_x * 3);
+        y + (min_x * 3)
     } else {
-        return 0;
+        0
     }
 }
 
@@ -98,7 +96,7 @@ fn get_input_from_file(file: &File) -> Vec<Vec<(i128, i128)>> {
     let reader = BufReader::new(file);
     for line in reader.lines() {
         let line_content = line.unwrap();
-        if line_content == "" {
+        if line_content.is_empty() {
             input.push(game);
             game = Vec::new();
             continue;

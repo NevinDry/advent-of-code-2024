@@ -45,7 +45,7 @@ fn get_fish_initial_position(frame: &Vec<Vec<char>>) -> (usize, usize) {
         .unwrap_or((0, 0))
 }
 
-fn print_frame(frame: &Vec<Vec<char>>) -> () {
+fn print_frame(frame: &Vec<Vec<char>>) {
     print!("{}[2J", 27 as char);
     for row in frame {
         for cell in row {
@@ -59,7 +59,7 @@ fn move_fish(
     frame: &mut Vec<Vec<char>>,
     fish_position: &mut (usize, usize),
     movement: &char,
-) -> () {
+) {
     let (y, x) = *fish_position;
     let mut moved = false;
     match movement {
@@ -196,7 +196,7 @@ fn move_fish_doubled(
     frame: &mut Vec<Vec<char>>,
     fish_position: &mut (usize, usize),
     movement: &char,
-) -> () {
+) {
     let (y, x) = *fish_position;
     let mut moved = false;
     match movement {
@@ -259,13 +259,13 @@ fn move_fish_doubled(
                 let mut boxes_possiibilities = find_boxes_possibilities(
                     -1,
                     frame,
-                    &(fish_position.0 as usize, fish_position.1 as usize),
+                    &(fish_position.0, fish_position.1),
                     boxes_possiibilities,
                 );
 
                 let not_possible = boxes_possiibilities
                     .iter()
-                    .any(|(is_possible, _, (_, _))| *is_possible == false);
+                    .any(|(is_possible, _, (_, _))| !(*is_possible));
 
                 if not_possible {
                     return;
@@ -288,22 +288,22 @@ fn move_fish_doubled(
             }
         }
         'v' => {
-            if frame[y as usize + 1][x as usize] == '#' {
+            if frame[y + 1][x] == '#' {
                 return;
-            } else if frame[y as usize + 1][x as usize] == '['
-                || frame[y as usize + 1][x as usize] == ']'
+            } else if frame[y + 1][x] == '['
+                || frame[y + 1][x] == ']'
             {
                 let boxes_possiibilities: &mut Vec<(bool, usize, (usize, usize))> = &mut vec![];
                 let mut boxes_possiibilities = find_boxes_possibilities(
                     1,
                     frame,
-                    &(fish_position.0 as usize, fish_position.1 as usize),
+                    &(fish_position.0, fish_position.1),
                     boxes_possiibilities,
                 );
 
                 let not_possible = boxes_possiibilities
                     .iter()
-                    .any(|(is_possible, _, (_, _))| *is_possible == false);
+                    .any(|(is_possible, _, (_, _))| !(*is_possible));
 
                 if not_possible {
                     return;
@@ -331,7 +331,7 @@ fn move_fish_doubled(
     };
 
     if moved {
-        frame[fish_position.0 as usize][fish_position.1 as usize] = '@';
+        frame[fish_position.0][fish_position.1] = '@';
         frame[y][x] = '.';
     }
 }
@@ -340,7 +340,7 @@ fn find_boxes_possibilities(
     direction: i32,
     frame: &Vec<Vec<char>>,
     cube_position: &(usize, usize),
-    mut boxes_possibilities: &mut Vec<(bool, usize, (usize, usize))>,
+    boxes_possibilities: &mut Vec<(bool, usize, (usize, usize))>,
 ) -> Vec<(bool, usize, (usize, usize))> {
     if frame[(cube_position.0 as i32 + direction) as usize][cube_position.1] == '#' {
         boxes_possibilities.push((false, cube_position.0 - 1, (0, 0)));
@@ -357,7 +357,7 @@ fn find_boxes_possibilities(
                 (cube_position.0 as i32 + direction) as usize,
                 cube_position.1,
             ),
-            &mut boxes_possibilities,
+            boxes_possibilities,
         );
         find_boxes_possibilities(
             direction,
@@ -366,9 +366,9 @@ fn find_boxes_possibilities(
                 (cube_position.0 as i32 + direction) as usize,
                 cube_position.1 + 1,
             ),
-            &mut boxes_possibilities,
+            boxes_possibilities,
         );
-    } else if frame[(cube_position.0 as i32 + direction) as usize][cube_position.1 as usize] == ']'
+    } else if frame[(cube_position.0 as i32 + direction) as usize][cube_position.1] == ']'
     {
         boxes_possibilities.push((
             true,
@@ -382,7 +382,7 @@ fn find_boxes_possibilities(
                 (cube_position.0 as i32 + direction) as usize,
                 cube_position.1,
             ),
-            &mut boxes_possibilities,
+            boxes_possibilities,
         );
         find_boxes_possibilities(
             direction,
@@ -391,7 +391,7 @@ fn find_boxes_possibilities(
                 (cube_position.0 as i32 + direction) as usize,
                 cube_position.1 - 1,
             ),
-            &mut boxes_possibilities,
+            boxes_possibilities,
         );
     };
     boxes_possibilities.to_vec()
@@ -411,7 +411,7 @@ fn get_input_from_file(file: &File) -> (Vec<Vec<char>>, Vec<char>) {
             moves.extend(line.chars());
         }
 
-        if line == "" {
+        if line.is_empty() {
             first_part = false;
         }
     }
@@ -456,7 +456,7 @@ fn get_input_doubled_from_file(file: &File) -> (Vec<Vec<char>>, Vec<char>) {
             moves.extend(line.chars());
         }
 
-        if line == "" {
+        if line.is_empty() {
             first_part = false;
         }
     }

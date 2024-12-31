@@ -24,7 +24,7 @@ fn main() {
     println!("Answer 1: {:?}", answer);
 }
 
-fn move_robots(mut robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
+fn move_robots(robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
     for i in 0..10000 {
         for robot in &mut *robots {
             move_robot(robot, frame);
@@ -39,7 +39,7 @@ fn move_robots(mut robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
     get_robots_sum_in_quadrant(robots, get_quadrant(frame))
 }
 
-fn move_robot(robot: &mut Robot, frame: (i32, i32)) -> () {
+fn move_robot(robot: &mut Robot, frame: (i32, i32)) {
     if robot.position.1 + robot.velocity.1 < 0 {
         robot.position.1 = frame.1 + robot.position.1 + robot.velocity.1;
     } else if robot.position.1 + robot.velocity.1 > frame.1 - 1 {

@@ -76,9 +76,7 @@ fn find_head_score(
                     find_head_score(input, y - 1, x, path_completed);
                 }
             }
-        } else {
-            return;
-        }
+        } 
     }
 }
 

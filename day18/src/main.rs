@@ -19,11 +19,11 @@ fn main() {
     // second star
     let mut breaker = (0, 0);
     for item in initial_bytes_fallen.iter().skip(12) {
-        bytes_fallen.push(item.clone());
+        bytes_fallen.push(*item);
         let grid = create_grid(&bytes_fallen, 71);
         let answer = find_way_out(&grid);
-        if answer.1 == false {
-            breaker = item.clone();
+        if !answer.1 {
+            breaker = *item;
             break;
         }
     }
@@ -184,7 +184,7 @@ mod tests {
             bytes_fallen.push(initial_bytes_fallen[i]);
             let grid = create_grid(&bytes_fallen, 7);
             let answer = find_way_out(&grid);
-            if answer.1 == false {
+            if !answer.1 {
                 breaker = initial_bytes_fallen[i];
                 break;
             }

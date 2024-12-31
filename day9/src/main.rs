@@ -49,7 +49,7 @@ fn move_blocks_compacted(mut input: Vec<String>) -> Vec<String> {
         .filter_map(|(i, c)| {
             if c.len() > 1 {
                 Some((c.to_string(), i))
-            } else if c.chars().all(|ch| ch.is_digit(10)) {
+            } else if c.chars().all(|ch| ch.is_ascii_digit()) {
                 Some((c.chars().next().unwrap().to_string(), i))
             } else {
                 None

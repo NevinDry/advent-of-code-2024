@@ -36,7 +36,7 @@ fn get_antena_antinodes_positions(
 
     antena_positions.iter().for_each(|(a, b)| {
         antena_positions.iter().for_each(|(x, y)| {
-            if !((x, y) == (a, b)) {
+            if (x, y) != (a, b) {
                 let mut antinodes = vec![];
                 match find_resonant {
                     true => {

@@ -37,7 +37,7 @@ fn try_keys(
 
 fn prepare_input(input: Vec<Vec<Vec<char>>>) -> Vec<(usize, usize, usize, usize, usize)> {
     let mut output = Vec::new();
-    for mut element in input {
+    for element in input {
         let mut sequence = (0, 0, 0, 0, 0);
         for y in 0..element.len() {
             for x in 0..element[y].len() {

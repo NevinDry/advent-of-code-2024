@@ -106,8 +106,8 @@ fn compute(
             };
 
             match opcode_operande_type.0 {
-                Opcode::Adv => register_a = register_a / 2usize.pow(operand as u32) as i64,
-                Opcode::Bxl => register_b = register_b ^ operand as i64,
+                Opcode::Adv => register_a /= 2usize.pow(operand as u32) as i64,
+                Opcode::Bxl => register_b ^= operand as i64,
                 Opcode::Bst => register_b = operand as i64 % 8,
                 Opcode::Jnz => {
                     if register_a != 0 {
@@ -115,7 +115,7 @@ fn compute(
                         continue;
                     }
                 }
-                Opcode::Bxc => register_b = register_b ^ register_c,
+                Opcode::Bxc => register_b ^= register_c,
                 Opcode::Out => output.push(operand % 8),
                 Opcode::Bdv => register_b = register_a / 2usize.pow(operand as u32) as i64,
                 Opcode::Cdv => register_c = register_a / 2usize.pow(operand as u32) as i64,

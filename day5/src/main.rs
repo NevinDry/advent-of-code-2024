@@ -43,7 +43,7 @@ fn reorder_incorrect_lines(
                     .collect_vec()
                     .iter()
                     .map(|line: &&String| -> i32 {
-                        let first = line.split('|').nth(0).unwrap();
+                        let first = line.split('|').next().unwrap();
                         if number_checked == &first {
                             1
                         } else {

@@ -50,18 +50,12 @@ fn get_xmas_x_count(lines_vec: &Vec<Vec<char>>) -> i32 {
 
 fn horizontal_xmas_count(line: &Vec<char>, char_index: usize) -> i32 {
     let mut xmas_count = 0;
-    if char_index + 3 < line.len() {
-        if line[char_index + 1] == 'M' && line[char_index + 2] == 'A' && line[char_index + 3] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if char_index + 3 < line.len() && line[char_index + 1] == 'M' && line[char_index + 2] == 'A' && line[char_index + 3] == 'S' {
+        xmas_count += 1;
     }
 
-    if char_index >= 3 {
-        if line[char_index - 1] == 'M' && line[char_index - 2] == 'A' && line[char_index - 3] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if char_index >= 3 && line[char_index - 1] == 'M' && line[char_index - 2] == 'A' && line[char_index - 3] == 'S' {
+        xmas_count += 1;
     }
     xmas_count
 }
@@ -69,22 +63,14 @@ fn horizontal_xmas_count(line: &Vec<char>, char_index: usize) -> i32 {
 fn vertical_xmas_count(line_vec: &Vec<Vec<char>>, line_index: usize, char_index: usize) -> i32 {
     let mut xmas_count = 0;
 
-    if line_index + 3 < line_vec.len() {
-        if line_vec[line_index + 1][char_index] == 'M'
-            && line_vec[line_index + 2][char_index] == 'A'
-            && line_vec[line_index + 3][char_index] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if line_index + 3 < line_vec.len() && line_vec[line_index + 1][char_index] == 'M'
+            && line_vec[line_index + 2][char_index] == 'A' && line_vec[line_index + 3][char_index] == 'S' {
+        xmas_count += 1;
     }
 
-    if line_index >= 3 {
-        if line_vec[line_index - 1][char_index] == 'M'
-            && line_vec[line_index - 2][char_index] == 'A'
-            && line_vec[line_index - 3][char_index] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if line_index >= 3 && line_vec[line_index - 1][char_index] == 'M'
+            && line_vec[line_index - 2][char_index] == 'A' && line_vec[line_index - 3][char_index] == 'S' {
+        xmas_count += 1;
     }
 
     xmas_count
@@ -93,40 +79,24 @@ fn vertical_xmas_count(line_vec: &Vec<Vec<char>>, line_index: usize, char_index:
 fn diagonal_xmas_count(line_vec: &Vec<Vec<char>>, line_index: usize, char_index: usize) -> i32 {
     let mut xmas_count = 0;
 
-    if line_index + 3 < line_vec.len() && char_index + 3 < line_vec[line_index].len() {
-        if line_vec[line_index + 1][char_index + 1] == 'M'
-            && line_vec[line_index + 2][char_index + 2] == 'A'
-            && line_vec[line_index + 3][char_index + 3] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if line_index + 3 < line_vec.len() && char_index + 3 < line_vec[line_index].len() && line_vec[line_index + 1][char_index + 1] == 'M'
+            && line_vec[line_index + 2][char_index + 2] == 'A' && line_vec[line_index + 3][char_index + 3] == 'S' {
+        xmas_count += 1;
     }
 
-    if line_index >= 3 && char_index >= 3 {
-        if line_vec[line_index - 1][char_index - 1] == 'M'
-            && line_vec[line_index - 2][char_index - 2] == 'A'
-            && line_vec[line_index - 3][char_index - 3] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if line_index >= 3 && char_index >= 3 && line_vec[line_index - 1][char_index - 1] == 'M'
+            && line_vec[line_index - 2][char_index - 2] == 'A' && line_vec[line_index - 3][char_index - 3] == 'S' {
+        xmas_count += 1;
     }
 
-    if line_index + 3 < line_vec.len() && char_index >= 3 {
-        if line_vec[line_index + 1][char_index - 1] == 'M'
-            && line_vec[line_index + 2][char_index - 2] == 'A'
-            && line_vec[line_index + 3][char_index - 3] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if line_index + 3 < line_vec.len() && char_index >= 3 && line_vec[line_index + 1][char_index - 1] == 'M'
+            && line_vec[line_index + 2][char_index - 2] == 'A' && line_vec[line_index + 3][char_index - 3] == 'S' {
+        xmas_count += 1;
     }
 
-    if line_index >= 3 && char_index + 3 < line_vec[line_index].len() {
-        if line_vec[line_index - 1][char_index + 1] == 'M'
-            && line_vec[line_index - 2][char_index + 2] == 'A'
-            && line_vec[line_index - 3][char_index + 3] == 'S'
-        {
-            xmas_count += 1;
-        }
+    if line_index >= 3 && char_index + 3 < line_vec[line_index].len() && line_vec[line_index - 1][char_index + 1] == 'M'
+            && line_vec[line_index - 2][char_index + 2] == 'A' && line_vec[line_index - 3][char_index + 3] == 'S' {
+        xmas_count += 1;
     }
 
     xmas_count
@@ -187,17 +157,11 @@ fn diagonal_mas_count(line_vec: &Vec<Vec<char>>, line_index: usize, char_index: 
                 // .A.
                 // S.M
             }
-        } else if line_vec[line_index + 1][char_index + 1] == 'S'
-            && line_vec[line_index - 1][char_index - 1] == 'S'
-        {
-            if line_vec[line_index - 1][char_index + 1] == 'M'
-                && line_vec[line_index + 1][char_index - 1] == 'M'
-            {
-                xmas_count += 1;
-                // S.M
-                // .A.
-                // M.S
-            }
+        } else if line_vec[line_index + 1][char_index + 1] == 'S' && line_vec[line_index - 1][char_index - 1] == 'S' && line_vec[line_index - 1][char_index + 1] == 'M' && line_vec[line_index + 1][char_index - 1] == 'M' {
+            xmas_count += 1;
+            // S.M
+            // .A.
+            // M.S
         }
     }
     xmas_count

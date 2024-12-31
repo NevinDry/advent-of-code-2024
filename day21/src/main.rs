@@ -7,7 +7,7 @@ fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
 
-    let mut codes = get_input_from_file(&file);
+    let codes = get_input_from_file(&file);
 
     // first star
     let answer = perform_codes(codes.clone(), 2);

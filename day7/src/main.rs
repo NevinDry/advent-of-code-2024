@@ -42,7 +42,7 @@ fn operation_is_valid(
     numbers: &Vec<u16>,
     operators: Vec<&str>,
 ) -> Result<bool, Error> {
-    (0..numbers.len() - 1)
+    if (0..numbers.len() - 1)
         .map(|_| operators.clone())
         .multi_cartesian_product()
         .any(|operators_permutation| {
@@ -61,9 +61,7 @@ fn operation_is_valid(
                 };
             }
             operation_result == *result
-        })
-        .then(|| Ok(true))
-        .unwrap_or(Ok(false))
+        }) { Ok(true) } else { Ok(false) }
 }
 
 fn get_operations_from_file(file: &File) -> Vec<(u64, Vec<u16>)> {

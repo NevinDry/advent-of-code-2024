@@ -85,7 +85,7 @@ fn open_the_gates(values: HashMap<String, usize>, gates: Vec<Gate>) -> usize {
     let mut gates = gates;
     let mut index = 0;
     loop {
-        if gates.len() == 0 {
+        if gates.is_empty() {
             break;
         }
         let gate = &gates[index];
@@ -150,7 +150,7 @@ fn get_input_from_file(file: &File) -> (HashMap<String, usize>, Vec<Gate>) {
     let mut first_part = true;
     for line in reader.lines() {
         let line = line.expect("Cannot get line");
-        if line == "" {
+        if line.is_empty() {
             first_part = false;
             continue;
         }

@@ -46,7 +46,7 @@ fn blink(stone: u128, index: u32, cache: &mut HashMap<(u128, u32), u128>) -> u12
 
 #[cfg(test)]
 mod tests {
-    use std::any;
+    
 
     #[test]
     fn test_basic_blinks() {
