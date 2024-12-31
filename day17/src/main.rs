@@ -82,7 +82,7 @@ fn compute(
     mut register_a: i64,
     mut register_b: i64,
     mut register_c: i64,
-    program: &Vec<usize>,
+    program: &[usize],
 ) -> String {
     let mut index = 0;
     let mut output = vec![];

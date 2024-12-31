@@ -17,7 +17,7 @@ fn main() {
     println!("Answer 2: {:?}", answer);
 }
 
-fn perform_fish_duty(frame: &mut Vec<Vec<char>>, moves: &Vec<char>) -> i32 {
+fn perform_fish_duty(frame: &mut [Vec<char>], moves: &Vec<char>) -> i32 {
     let mut fish_position = get_fish_initial_position(frame);
 
     for movement in moves {
@@ -179,9 +179,10 @@ fn perform_fish_duty_doubled(frame: &mut Vec<Vec<char>>, moves: &Vec<char>) -> i
     }
 
     let mut sum = 0;
-    for y in 0..frame.len() {
-        for x in 0..frame[y].len() {
-            if frame[y][x] == '[' {
+
+    for (y, yitem) in frame.iter().enumerate() {
+        for (x, xitem) in yitem.iter().enumerate() {
+            if *xitem == '[' {
                 sum += 100 * y as i32 + x as i32;
             }
         }

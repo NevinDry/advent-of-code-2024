@@ -18,7 +18,7 @@ fn main() {
     println!("Second star answer: {}", answer);
 }
 
-fn go_over_maze(frame: &Vec<Vec<char>>) -> (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>) {
+fn go_over_maze(frame: &[Vec<char>]) -> (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>) {
     let start = (frame.len() - 2, 1);
     assert_eq!(frame[start.0][start.1], 'S');
     let end = (1, frame[0].len() - 2);

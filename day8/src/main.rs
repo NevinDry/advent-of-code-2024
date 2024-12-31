@@ -26,7 +26,7 @@ fn get_antenas_antinodes_count(input: &Vec<Vec<char>>, find_resonant: bool) -> u
 }
 
 fn get_antena_antinodes_positions(
-    input: &Vec<Vec<char>>,
+    input: &[Vec<char>],
     antena: char,
     find_resonant: bool,
 ) -> Vec<(i32, i32)> {
@@ -64,7 +64,7 @@ fn get_antena_antinodes_positions(
 }
 
 fn get_resonant_antinodes(
-    input: &Vec<Vec<char>>,
+    input: &[Vec<char>],
     first_antena_pos: (i32, i32),
     second_antena_pos: (i32, i32),
 ) -> Vec<(i32, i32)> {
@@ -89,7 +89,7 @@ fn get_resonant_antinodes(
 
     resonant_antinodes
 }
-fn get_existing_antenas(input: &Vec<Vec<char>>) -> Vec<char> {
+fn get_existing_antenas(input: &[Vec<char>]) -> Vec<char> {
     input
         .iter()
         .flat_map(|line| line.iter().filter(|&&c| c != '.'))
@@ -98,7 +98,7 @@ fn get_existing_antenas(input: &Vec<Vec<char>>) -> Vec<char> {
         .cloned()
         .collect()
 }
-fn get_antena_positions(input: &Vec<Vec<char>>, antena: char) -> Vec<(i32, i32)> {
+fn get_antena_positions(input: &[Vec<char>], antena: char) -> Vec<(i32, i32)> {
     input
         .iter()
         .enumerate()

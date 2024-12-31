@@ -39,9 +39,9 @@ fn prepare_input(input: Vec<Vec<Vec<char>>>) -> Vec<(usize, usize, usize, usize,
     let mut output = Vec::new();
     for element in input {
         let mut sequence = (0, 0, 0, 0, 0);
-        for y in 0..element.len() {
-            for x in 0..element[y].len() {
-                if element[y][x] == '#' {
+        for yitem in &element {
+            for (x, xitem) in yitem.iter().enumerate() {
+                if *xitem == '#' {
                     match x {
                         0 => sequence.0 += 1,
                         1 => sequence.1 += 1,

@@ -16,7 +16,7 @@ fn main() {
     println!("Answer 2: {:?}", answer);
 }
 
-fn get_xmas_count(lines_vec: &Vec<Vec<char>>) -> i32 {
+fn get_xmas_count(lines_vec: &[Vec<char>]) -> i32 {
     lines_vec
         .iter()
         .enumerate()
@@ -34,7 +34,7 @@ fn get_xmas_count(lines_vec: &Vec<Vec<char>>) -> i32 {
         .sum()
 }
 
-fn get_xmas_x_count(lines_vec: &Vec<Vec<char>>) -> i32 {
+fn get_xmas_x_count(lines_vec: &[Vec<char>]) -> i32 {
     lines_vec
         .iter()
         .enumerate()
