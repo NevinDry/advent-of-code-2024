@@ -28,7 +28,7 @@ fn get_tokens_price(input: &mut Vec<Vec<(i128, i128)>>, is_large: bool) -> i128 
     tokens_price
 }
 
-fn get_tokens_price_for_game(game: &Vec<(i128, i128)>) -> i128 {
+fn get_tokens_price_for_game(game: &[(i128, i128)]) -> i128 {
     let a = game[0];
     let b = game[1];
     let target = game[2];
@@ -66,7 +66,7 @@ fn get_tokens_price_for_game(game: &Vec<(i128, i128)>) -> i128 {
     }
 }
 
-fn get_tokens_price_for_large_game(game: &Vec<(i128, i128)>) -> i128 {
+fn get_tokens_price_for_large_game(game: &[(i128, i128)]) -> i128 {
     let (a, b, mut target) = (game[0], game[1], game[2]);
 
     target.0 += 10000000000000;

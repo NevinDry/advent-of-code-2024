@@ -1,6 +1,5 @@
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
-use std::i32;
 use std::io::{self, BufRead};
 
 const DIRECTIONS: [(isize, isize); 4] = [(-1, 0), (0, 1), (1, 0), (0, -1)];
@@ -40,7 +39,6 @@ fn go_over_maze(frame: &Vec<Vec<char>>, diff: i32, max_depth: i32) -> i64 {
     for dot in reference_run.0.iter() {
         let mut cache: HashSet<(isize, isize, i32)> = HashSet::new();
         let mut cheat_done: HashSet<(usize, usize)> = HashSet::new();
-        let max_depth = max_depth;
         run_savings += find_land(
             frame,
             &reference_run.0,
@@ -116,7 +114,7 @@ fn find_land(
 }
 
 fn get_maze_runs(
-    frame: &Vec<Vec<char>>,
+    frame: &[Vec<char>],
     start: (usize, usize),
     end: (usize, usize),
     max_cost: i32,

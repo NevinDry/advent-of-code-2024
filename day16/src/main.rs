@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 use std::fs::File;
-use std::i32;
 use std::io::{self, BufRead};
 
 const DIRECTIONS: [(isize, isize); 4] = [(-1, 0), (0, 1), (1, 0), (0, -1)];
@@ -45,7 +44,7 @@ fn find_best_spots(min_and_maze_runs: (i32, Vec<(Vec<(usize, usize, i32)>, i32, 
 }
 
 fn get_maze_runs(
-    frame: &Vec<Vec<char>>,
+    frame: &[Vec<char>],
     start: (usize, usize),
     end: (usize, usize),
 ) -> Vec<(Vec<(usize, usize, i32)>, i32, usize)> {

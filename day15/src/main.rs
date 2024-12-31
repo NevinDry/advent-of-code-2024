@@ -27,9 +27,9 @@ fn perform_fish_duty(frame: &mut Vec<Vec<char>>, moves: &Vec<char>) -> i32 {
     }
 
     let mut sum = 0;
-    for y in 0..frame.len() {
-        for x in 0..frame[y].len() {
-            if frame[y][x] == 'O' {
+    for (y, yitem) in frame.iter().enumerate() {
+        for (x, xitem) in yitem.iter().enumerate() {
+            if *xitem == 'O' {
                 sum += 100 * y as i32 + x as i32;
             }
         }
@@ -37,7 +37,7 @@ fn perform_fish_duty(frame: &mut Vec<Vec<char>>, moves: &Vec<char>) -> i32 {
     sum
 }
 
-fn get_fish_initial_position(frame: &Vec<Vec<char>>) -> (usize, usize) {
+fn get_fish_initial_position(frame: &[Vec<char>]) -> (usize, usize) {
     frame
         .iter()
         .enumerate()
@@ -45,6 +45,7 @@ fn get_fish_initial_position(frame: &Vec<Vec<char>>) -> (usize, usize) {
         .unwrap_or((0, 0))
 }
 
+#[allow(dead_code)]
 fn print_frame(frame: &Vec<Vec<char>>) {
     print!("{}[2J", 27 as char);
     for row in frame {
@@ -55,11 +56,7 @@ fn print_frame(frame: &Vec<Vec<char>>) {
     }
 }
 
-fn move_fish(
-    frame: &mut Vec<Vec<char>>,
-    fish_position: &mut (usize, usize),
-    movement: &char,
-) {
+fn move_fish(frame: &mut [Vec<char>], fish_position: &mut (usize, usize), movement: &char) {
     let (y, x) = *fish_position;
     let mut moved = false;
     match movement {
@@ -290,9 +287,7 @@ fn move_fish_doubled(
         'v' => {
             if frame[y + 1][x] == '#' {
                 return;
-            } else if frame[y + 1][x] == '['
-                || frame[y + 1][x] == ']'
-            {
+            } else if frame[y + 1][x] == '[' || frame[y + 1][x] == ']' {
                 let boxes_possiibilities: &mut Vec<(bool, usize, (usize, usize))> = &mut vec![];
                 let mut boxes_possiibilities = find_boxes_possibilities(
                     1,
@@ -368,8 +363,7 @@ fn find_boxes_possibilities(
             ),
             boxes_possibilities,
         );
-    } else if frame[(cube_position.0 as i32 + direction) as usize][cube_position.1] == ']'
-    {
+    } else if frame[(cube_position.0 as i32 + direction) as usize][cube_position.1] == ']' {
         boxes_possibilities.push((
             true,
             (cube_position.0 as i32 + direction) as usize,

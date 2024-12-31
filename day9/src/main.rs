@@ -90,11 +90,11 @@ fn move_blocks_compacted(mut input: Vec<String>) -> Vec<String> {
         match first_match_index {
             Some(index) => {
                 let first_match: (usize, usize) = dots_vec[index];
-                for a in first_match.0..first_match.0 + file.1 {
-                    input[a] = file.0.to_string();
+                for ia in input.iter_mut().skip(first_match.0).take(file.1) {
+                    *ia = file.0.to_string();
                 }
-                for b in file.2..file.2 + file.1 {
-                    input[b] = ".".to_string();
+                for ib in input.iter_mut().skip(file.2).take(file.1) {
+                    *ib = ".".to_string();
                 }
                 dots_vec.remove(index);
                 if first_match.1 > file.1 {

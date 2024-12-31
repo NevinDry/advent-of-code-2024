@@ -28,8 +28,8 @@ fn main() {
 }
 
 fn reorder_incorrect_lines(
-    incorrected_ordered_lines: &Vec<String>,
-    ordering_lines: &Vec<String>,
+    incorrected_ordered_lines: &[String],
+    ordering_lines: &[String],
 ) -> Vec<String> {
     let mut correct_ordered_lines = Vec::new();
     for line in incorrected_ordered_lines {
@@ -62,7 +62,7 @@ fn reorder_incorrect_lines(
     correct_ordered_lines
 }
 
-fn get_middle_page_number(ordered_lines: &Vec<String>) -> i32 {
+fn get_middle_page_number(ordered_lines: &[String]) -> i32 {
     ordered_lines
         .iter()
         .map(|line| {
@@ -73,7 +73,7 @@ fn get_middle_page_number(ordered_lines: &Vec<String>) -> i32 {
         .sum()
 }
 
-fn is_in_correct_order(line: &String, ordering_lines: &Vec<String>) -> bool {
+fn is_in_correct_order(line: &str, ordering_lines: &[String]) -> bool {
     let numbers_to_check = line.split(',').collect::<Vec<&str>>();
 
     let filtered_lines: Vec<&String> = ordering_lines

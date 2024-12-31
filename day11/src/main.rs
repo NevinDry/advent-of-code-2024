@@ -12,7 +12,7 @@ fn main() {
     println!("Second star answer {:?}", answer);
 }
 
-fn blinks(input: &Vec<u128>, times: u32) -> u128 {
+fn blinks(input: &[u128], times: u32) -> u128 {
     let mut cache: HashMap<(u128, u32), u128> = HashMap::new();
     input
         .iter()
@@ -46,7 +46,6 @@ fn blink(stone: u128, index: u32, cache: &mut HashMap<(u128, u32), u128>) -> u12
 
 #[cfg(test)]
 mod tests {
-    
 
     #[test]
     fn test_basic_blinks() {

@@ -16,10 +16,7 @@ fn main() {
     println!("Answer 2: {:?}", anwser);
 }
 
-fn get_valid_operations_sum(
-    result_and_numbers: &Vec<(u64, Vec<u16>)>,
-    operators: Vec<&str>,
-) -> u64 {
+fn get_valid_operations_sum(result_and_numbers: &[(u64, Vec<u16>)], operators: Vec<&str>) -> u64 {
     let mut valid_operation_sum = 0;
 
     result_and_numbers.iter().for_each(|(result, numbers)| {
@@ -37,11 +34,7 @@ fn get_valid_operations_sum(
     valid_operation_sum
 }
 
-fn operation_is_valid(
-    result: &u64,
-    numbers: &Vec<u16>,
-    operators: Vec<&str>,
-) -> Result<bool, Error> {
+fn operation_is_valid(result: &u64, numbers: &[u16], operators: Vec<&str>) -> Result<bool, Error> {
     if (0..numbers.len() - 1)
         .map(|_| operators.clone())
         .multi_cartesian_product()
@@ -61,7 +54,12 @@ fn operation_is_valid(
                 };
             }
             operation_result == *result
-        }) { Ok(true) } else { Ok(false) }
+        })
+    {
+        Ok(true)
+    } else {
+        Ok(false)
+    }
 }
 
 fn get_operations_from_file(file: &File) -> Vec<(u64, Vec<u16>)> {
@@ -70,13 +68,12 @@ fn get_operations_from_file(file: &File) -> Vec<(u64, Vec<u16>)> {
     for line in reader.lines() {
         if let Ok(line_content) = line {
             if let Some((before_colon, after_colon)) = line_content.split_once(':') {
-                if let Ok(first_number) = before_colon.trim().parse::<u64>() {
-                    let second_numbers = after_colon
-                        .split_whitespace()
-                        .filter_map(|num| num.parse::<u16>().ok())
-                        .collect::<Vec<u16>>();
-                    operations_results.push((first_number, second_numbers));
-                }
+                let second_numbers = after_colon
+                    .split_whitespace()
+                    .filter_map(|num| num.parse::<u16>().ok())
+                    .collect::<Vec<u16>>();
+                operations_results
+                    .push((before_colon.trim().parse::<u64>().unwrap(), second_numbers));
             }
         }
     }

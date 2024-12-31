@@ -41,11 +41,11 @@ fn main() {
     println!("Answer 1 {:?}", answer);
 
     // Second star
-    let answer = find_compute(register_a, register_b, register_c, program);
+    let answer = find_compute(register_b, register_c, program);
     println!("Answer 2 {:?}", answer);
 }
 
-fn find_compute(register_a: i64, register_b: i64, register_c: i64, program: Vec<usize>) -> i64 {
+fn find_compute(register_b: i64, register_c: i64, program: Vec<usize>) -> i64 {
     let target_output: Vec<String> = program.iter().map(|x| x.to_string()).collect();
     let mut coefficients = vec![0; program.len()];
 
@@ -201,7 +201,7 @@ mod tests {
         let register_c = 0;
         let program = vec![0, 3, 5, 4, 3, 0];
 
-        let answer = find_compute(register_a, register_b, register_c, program);
+        let answer = find_compute(register_b, register_c, program);
         assert_eq!(answer, 117440);
     }
 }
