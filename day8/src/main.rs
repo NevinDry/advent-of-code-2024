@@ -15,7 +15,7 @@ fn main() {
     println!("Answer 2: {:?}", antinodes_count);
 }
 
-fn get_antenas_antinodes_count(input: &Vec<Vec<char>>, find_resonant: bool) -> u64 {
+fn get_antenas_antinodes_count(input: &[Vec<char>], find_resonant: bool) -> u64 {
     let antenas = get_existing_antenas(input);
 
     antenas

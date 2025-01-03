@@ -66,15 +66,12 @@ fn get_operations_from_file(file: &File) -> Vec<(u64, Vec<u16>)> {
     let mut operations_results: Vec<(u64, Vec<u16>)> = Vec::new();
     let reader = io::BufReader::new(file);
     for line in reader.lines() {
-        if let Ok(line_content) = line {
-            if let Some((before_colon, after_colon)) = line_content.split_once(':') {
-                let second_numbers = after_colon
-                    .split_whitespace()
-                    .filter_map(|num| num.parse::<u16>().ok())
-                    .collect::<Vec<u16>>();
-                operations_results
-                    .push((before_colon.trim().parse::<u64>().unwrap(), second_numbers));
-            }
+        if let Some((before_colon, after_colon)) = line.unwrap().split_once(':') {
+            let second_numbers = after_colon
+                .split_whitespace()
+                .filter_map(|num| num.parse::<u16>().ok())
+                .collect::<Vec<u16>>();
+            operations_results.push((before_colon.trim().parse::<u64>().unwrap(), second_numbers));
         }
     }
     operations_results

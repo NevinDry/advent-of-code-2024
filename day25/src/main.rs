@@ -58,6 +58,7 @@ fn prepare_input(input: Vec<Vec<Vec<char>>>) -> Vec<(usize, usize, usize, usize,
     output
 }
 
+#[allow(clippy::type_complexity)]
 fn get_input_from_file(file: &File) -> (Vec<Vec<Vec<char>>>, Vec<Vec<Vec<char>>>) {
     let mut keys = Vec::new();
     let mut locks = Vec::new();

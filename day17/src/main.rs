@@ -86,45 +86,41 @@ fn compute(
 ) -> String {
     let mut index = 0;
     let mut output = vec![];
-    loop {
-        if let Some(digit) = program.get(index) {
-            let opcode_operande_type = get_opcode_operand_from_usize(*digit);
-            let operand: usize = match opcode_operande_type.1 {
-                OperandType::Literal => program[index + 1],
-                OperandType::Combo => match program[index + 1] {
-                    0 => 0,
-                    1 => 1,
-                    2 => 2,
-                    3 => 3,
-                    4 => register_a,
-                    5 => register_b,
-                    6 => register_c,
-                    _ => panic!("Invalid operand"),
-                }
-                .try_into()
-                .unwrap(),
-            };
-
-            match opcode_operande_type.0 {
-                Opcode::Adv => register_a /= 2usize.pow(operand as u32) as i64,
-                Opcode::Bxl => register_b ^= operand as i64,
-                Opcode::Bst => register_b = operand as i64 % 8,
-                Opcode::Jnz => {
-                    if register_a != 0 {
-                        index = operand;
-                        continue;
-                    }
-                }
-                Opcode::Bxc => register_b ^= register_c,
-                Opcode::Out => output.push(operand % 8),
-                Opcode::Bdv => register_b = register_a / 2usize.pow(operand as u32) as i64,
-                Opcode::Cdv => register_c = register_a / 2usize.pow(operand as u32) as i64,
+    while let Some(digit) = program.get(index) {
+        let opcode_operande_type = get_opcode_operand_from_usize(*digit);
+        let operand: usize = match opcode_operande_type.1 {
+            OperandType::Literal => program[index + 1],
+            OperandType::Combo => match program[index + 1] {
+                0 => 0,
+                1 => 1,
+                2 => 2,
+                3 => 3,
+                4 => register_a,
+                5 => register_b,
+                6 => register_c,
+                _ => panic!("Invalid operand"),
             }
+            .try_into()
+            .unwrap(),
+        };
 
-            index += 2;
-        } else {
-            break;
+        match opcode_operande_type.0 {
+            Opcode::Adv => register_a /= 2usize.pow(operand as u32) as i64,
+            Opcode::Bxl => register_b ^= operand as i64,
+            Opcode::Bst => register_b = operand as i64 % 8,
+            Opcode::Jnz => {
+                if register_a != 0 {
+                    index = operand;
+                    continue;
+                }
+            }
+            Opcode::Bxc => register_b ^= register_c,
+            Opcode::Out => output.push(operand % 8),
+            Opcode::Bdv => register_b = register_a / 2usize.pow(operand as u32) as i64,
+            Opcode::Cdv => register_c = register_a / 2usize.pow(operand as u32) as i64,
         }
+
+        index += 2;
     }
 
     output

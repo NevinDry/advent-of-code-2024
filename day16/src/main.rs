@@ -18,6 +18,7 @@ fn main() {
     println!("Second star answer: {}", answer);
 }
 
+#[allow(clippy::type_complexity)]
 fn go_over_maze(frame: &[Vec<char>]) -> (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>) {
     let start = (frame.len() - 2, 1);
     assert_eq!(frame[start.0][start.1], 'S');
@@ -29,6 +30,7 @@ fn go_over_maze(frame: &[Vec<char>]) -> (i32, Vec<(Vec<(usize, usize, i32)>, i32
     (maze_runs.iter().min_by_key(|x| x.1).unwrap().1, maze_runs)
 }
 
+#[allow(clippy::type_complexity)]
 fn find_best_spots(min_and_maze_runs: (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>)) -> i32 {
     let mut best_spots = min_and_maze_runs
         .1
@@ -43,6 +45,7 @@ fn find_best_spots(min_and_maze_runs: (i32, Vec<(Vec<(usize, usize, i32)>, i32, 
     best_spots.len() as i32
 }
 
+#[allow(clippy::type_complexity)]
 fn get_maze_runs(
     frame: &[Vec<char>],
     start: (usize, usize),

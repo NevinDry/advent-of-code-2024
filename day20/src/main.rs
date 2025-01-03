@@ -55,6 +55,7 @@ fn go_over_maze(frame: &Vec<Vec<char>>, diff: i32, max_depth: i32) -> i64 {
     run_savings
 }
 
+#[allow(clippy::too_many_arguments)]
 fn find_land(
     frame: &Vec<Vec<char>>,
     reference_run: &Vec<(usize, usize, i32)>,
@@ -113,6 +114,7 @@ fn find_land(
     run_savings
 }
 
+#[allow(clippy::type_complexity)]
 fn get_maze_runs(
     frame: &[Vec<char>],
     start: (usize, usize),

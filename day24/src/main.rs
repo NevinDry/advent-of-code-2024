@@ -67,10 +67,8 @@ fn find_swapped_gates(gates: &[Gate], max_gate: String) -> String {
                     {
                         swapped.insert(gate.output.clone());
                     }
-                } else {
-                    if !gate.output.starts_with('z') {
-                        swapped.insert(gate.output.clone());
-                    }
+                } else if !gate.output.starts_with('z') {
+                    swapped.insert(gate.output.clone());
                 }
             }
         }

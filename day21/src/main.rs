@@ -60,9 +60,7 @@ fn wrap_moves(
             let vertical_move = current_position.0 - target.0;
             let horizontal_move = current_position.1 - target.1;
 
-            if vertical_move == 0 || horizontal_move == 0 {
-                result += wrap_moves(vertical_move, horizontal_move, depth - 1, false, cache)
-            } else if target == (1, 0) && current_position.0 == 0 {
+            if target == (1, 0) && current_position.0 == 0 {
                 result += wrap_moves(vertical_move, horizontal_move, depth - 1, false, cache)
             } else if current_position == (1, 0) && target.0 == 0 {
                 result += wrap_moves(vertical_move, horizontal_move, depth - 1, true, cache)
