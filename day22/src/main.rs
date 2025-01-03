@@ -84,7 +84,7 @@ fn perform_secret_number(secret_number: i64, depth: i64) -> (i64, Vec<usize>) {
 fn perform_operations(secret_number: i64) -> i64 {
     let first = first_operation(secret_number);
     let second = second_operation(first);
-    
+
     third_operation(second)
 }
 
@@ -101,12 +101,10 @@ fn third_operation(secret_number: i64) -> i64 {
 }
 
 fn mix(secret_number: i64, value: i64) -> i64 {
-    
     secret_number ^ value
 }
 
 fn prune(secret_number: i64) -> i64 {
-    
     secret_number % 16777216
 }
 

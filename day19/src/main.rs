@@ -43,11 +43,13 @@ fn can_form_pattern(
     }
     for index in 0..available_colors.len() {
         let color = &available_colors[index];
-        if pattern.starts_with(color) && can_form_pattern(
+        if pattern.starts_with(color)
+            && can_form_pattern(
                 pattern.strip_prefix(color).unwrap().to_string(),
                 available_colors,
                 cache,
-            ) {
+            )
+        {
             cache.insert(pattern.to_string(), true);
             return true;
         }
