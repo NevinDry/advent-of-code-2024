@@ -13,11 +13,11 @@ fn main() {
 
     // first star
     let answer = perform_codes(codes.clone(), 2);
-    println!("First star answer : {:?}", answer);
+    println!("First Star Answer : {:?}", answer);
 
     // second star
     let answer = perform_codes(codes, 25);
-    println!("Second star answer : {:?}", answer);
+    println!("Second Star Answer : {:?}", answer);
 }
 
 fn wrap_moves(

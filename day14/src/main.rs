@@ -23,7 +23,7 @@ fn main() {
 
     // first and second star
     let answer = move_robots(&mut robots, (101, 103));
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 }
 
 fn move_robots(robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
@@ -33,7 +33,7 @@ fn move_robots(robots: &mut Vec<Robot>, frame: (i32, i32)) -> i32 {
         }
         if robots_are_aligned(robots, frame) {
             print_robots(robots, frame);
-            println!("Answer 2: {}", i + 1);
+            println!("Second Star Answer: {}", i + 1);
             break;
         }
     }

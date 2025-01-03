@@ -13,10 +13,10 @@ fn main() {
 
     // first star
     let answer = perform_secret_numbers(buyers, 2000);
-    println!("First star answer : {:?}", answer.0);
+    println!("First Star Answer : {:?}", answer.0);
 
     // first star
-    println!("Second star answer : {:?}", answer.1);
+    println!("Second Star Answer : {:?}", answer.1);
 }
 
 fn perform_secret_numbers(input: Vec<i64>, depth: i64) -> (i64, isize) {

@@ -12,11 +12,11 @@ fn main() {
 
     // first star
     let answer = get_guard_duty(&mut lines_vec);
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 
     // second star
     let answer = get_guard_duty_infini_loop(&mut lines_vec_clone);
-    println!("Answer 2: {:?}", answer);
+    println!("Second Star Answer: {:?}", answer);
 }
 
 fn get_guard_duty(lines_vec: &mut Vec<Vec<char>>) -> i32 {
@@ -107,7 +107,6 @@ fn get_guard_duty_infini_loop(lines_vec: &mut Vec<Vec<char>>) -> i32 {
     let original_lines_vec = lines_vec.clone();
     let mut saved_positions = HashSet::new();
     saved_positions.insert(format!("{}-{}^", starting_point.0, starting_point.1));
-    println!("Starting exploring possibilities....");
 
     let mut i = 0;
     while i < lines_vec.len() {
@@ -118,7 +117,6 @@ fn get_guard_duty_infini_loop(lines_vec: &mut Vec<Vec<char>>) -> i32 {
 
                 if perform_duty(lines_vec, starting_point, &mut saved_positions).is_err() {
                     infinite_guard_count += 1;
-                    println!("loop detected: {:?}", infinite_guard_count);
                 }
 
                 lines_vec[i][j] = '.';

@@ -18,7 +18,7 @@ fn main() {
             answer += 1;
         }
     }
-    println!("Answer 1: {}", answer);
+    println!("First Star Answer: {}", answer);
 
     // second star
     let mut answer = 0;
@@ -29,7 +29,7 @@ fn main() {
         answer += possibilities;
     }
 
-    println!("Answer 2: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
 fn can_form_pattern(

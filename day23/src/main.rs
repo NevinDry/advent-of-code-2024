@@ -18,11 +18,11 @@ fn main() {
             triple.0.starts_with("t") || triple.1.starts_with("t") || triple.2.starts_with("t")
         })
         .count();
-    println!("First star answer : {:?}", answer);
+    println!("First Star Answer : {:?}", answer);
 
     // Second star
     let answer = find_password(triples, duos);
-    println!("Second star answer : {:?}", answer);
+    println!("Second Star Answer : {:?}", answer);
 }
 
 fn find_3_sets(input: HashSet<(String, String)>) -> Vec<(String, String, String)> {

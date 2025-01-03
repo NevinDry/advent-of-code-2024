@@ -16,7 +16,7 @@ fn main() {
         .collect::<Vec<_>>();
     let grid = create_grid(&bytes_fallen, 71);
     let answer = find_way_out(&grid);
-    println!("Answer 1: {:?}", answer.0);
+    println!("First Star Answer: {:?}", answer.0);
 
     // second star
     let mut breaker = (0, 0);
@@ -30,7 +30,7 @@ fn main() {
         }
     }
 
-    println!("Answer 2: {:?}", breaker);
+    println!("Second Star Answer: {:?}", breaker);
 }
 
 fn find_way_out(grid: &[Vec<char>]) -> (usize, bool) {
@@ -141,7 +141,6 @@ mod tests {
         let grid = create_grid(&bytes_fallen, 7);
         let answer = find_way_out(&grid);
 
-        println!("{:?}", answer);
         assert_eq!(answer.0, 22);
     }
 
@@ -191,8 +190,6 @@ mod tests {
                 break;
             }
         }
-
-        println!("{:?}", breaker);
         assert_eq!(breaker, (6, 1));
     }
 }

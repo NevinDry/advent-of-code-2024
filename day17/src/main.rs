@@ -40,11 +40,11 @@ fn main() {
 
     // first star
     let answer = compute(register_a, register_b, register_c, &program);
-    println!("Answer 1 {:?}", answer);
+    println!("First Star Answer {:?}", answer);
 
     // Second star
     let answer = find_compute(register_b, register_c, program);
-    println!("Answer 2 {:?}", answer);
+    println!("Second Star Answer {:?}", answer);
 }
 
 fn find_compute(register_b: i64, register_c: i64, program: Vec<usize>) -> i64 {

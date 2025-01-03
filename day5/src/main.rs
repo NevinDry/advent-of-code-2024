@@ -21,12 +21,12 @@ fn main() {
         }
     }
     let answer = get_middle_page_number(&correct_ordered_lines);
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 
     let incorrected_ordered_lines =
         reorder_incorrect_lines(&incorrected_ordered_lines, &ordering_lines);
     let answer = get_middle_page_number(&incorrected_ordered_lines);
-    println!("Answer 2: {:?}", answer);
+    println!("Second Star Answer: {:?}", answer);
 }
 
 fn reorder_incorrect_lines(

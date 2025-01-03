@@ -10,12 +10,11 @@ fn main() {
 
     // first star
     let answer = get_xmas_count(&lines_vec);
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 
     // second star
-    println!("{:?}", lines_vec);
     let answer = get_xmas_x_count(&lines_vec);
-    println!("Answer 2: {:?}", answer);
+    println!("Second Star Answer: {:?}", answer);
 }
 
 fn get_xmas_count(lines_vec: &[Vec<char>]) -> i32 {

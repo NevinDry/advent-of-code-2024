@@ -12,11 +12,11 @@ fn main() {
 
     // first star
     let anwser = get_valid_operations_sum(&result_and_numbers, vec!["+", "*"]);
-    println!("Answer 1: {:?}", anwser);
+    println!("First Star Answer: {:?}", anwser);
 
     // second star
     let anwser = get_valid_operations_sum(&result_and_numbers, vec!["+", "*", "||"]);
-    println!("Answer 2: {:?}", anwser);
+    println!("Second Star Answer: {:?}", anwser);
 }
 
 fn get_valid_operations_sum(result_and_numbers: &[(u64, Vec<u16>)], operators: Vec<&str>) -> u64 {

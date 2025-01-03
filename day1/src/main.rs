@@ -15,11 +15,11 @@ fn main() {
 
     // first star
     let columns_gap = get_columns_elements_gap(&column1, &column2);
-    println!("Answer 1: {:?}", columns_gap);
+    println!("First Star Answer: {:?}", columns_gap);
 
     // second star
     let column_similarity = get_columns_elements_similarity(&column1, &column2);
-    println!("Answer 2: {:?}", column_similarity);
+    println!("Second Star Answer: {:?}", column_similarity);
 }
 
 fn get_columns_from_file(file: &File) -> (Vec<i32>, Vec<i32>) {

@@ -13,7 +13,7 @@ fn main() {
     let keys = prepare_input(keys);
     let locks = prepare_input(locks);
     let answer = try_keys(&keys, &locks);
-    println!("Answer 1 {:?}", answer);
+    println!("First Star Answer {:?}", answer);
 }
 
 fn try_keys(

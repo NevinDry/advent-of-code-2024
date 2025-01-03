@@ -27,11 +27,11 @@ fn main() {
 
     // first star
     let answer = open_the_gates(values, gates.clone());
-    println!("First star answer : {:?}", answer);
+    println!("First Star Answer : {:?}", answer);
 
     // second star
     let answer: String = find_swapped_gates(&gates, "z45".to_string());
-    println!("Second star answer : {:?}", answer);
+    println!("Second Star Answer : {:?}", answer);
 }
 
 fn find_swapped_gates(gates: &[Gate], max_gate: String) -> String {
@@ -114,7 +114,6 @@ fn open_the_gates(values: HashMap<String, usize>, gates: Vec<Gate>) -> usize {
     z.sort_by_key(|(key, _)| std::cmp::Reverse((*key).clone()));
 
     let concat_num: String = z.iter().map(|(_, value)| value.to_string()).collect();
-    println!("Concatenated values: {}", concat_num);
     usize::from_str_radix(&concat_num, 2).unwrap()
 }
 

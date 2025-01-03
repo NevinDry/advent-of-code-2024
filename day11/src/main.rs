@@ -8,10 +8,10 @@ fn main() {
         .map(|digit| digit.parse::<u128>().unwrap())
         .collect::<Vec<u128>>();
     let answer = blinks(&input, 25);
-    println!("First star answer {:?}", answer);
+    println!("First Star Answer {:?}", answer);
 
     let answer: u128 = blinks(&input, 75);
-    println!("Second star answer {:?}", answer);
+    println!("Second Star Answer {:?}", answer);
 }
 
 fn blinks(input: &[u128], times: u32) -> u128 {

@@ -13,11 +13,11 @@ fn main() {
 
     // first star
     let answer = go_over_maze(&frame, 100, 2);
-    println!("First star answer: {}", answer);
+    println!("First Star Answer: {}", answer);
 
     // second star
     let answer = go_over_maze(&frame, 100, 20);
-    println!("Second star answer: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
 fn go_over_maze(frame: &Vec<Vec<char>>, diff: i32, max_depth: i32) -> i64 {
@@ -36,6 +36,11 @@ fn go_over_maze(frame: &Vec<Vec<char>>, diff: i32, max_depth: i32) -> i64 {
     let maze_runs = get_maze_runs(frame, start, end, i32::MAX);
     let reference_run = maze_runs.iter().min_by_key(|x| x.1).unwrap();
 
+    let mut reference_run_map = HashMap::new();
+    for &(y, x, d) in &reference_run.0 {
+        reference_run_map.insert((y, x), d);
+    }
+
     let mut run_savings: i64 = 0;
 
     for dot in reference_run.0.iter() {
@@ -43,7 +48,7 @@ fn go_over_maze(frame: &Vec<Vec<char>>, diff: i32, max_depth: i32) -> i64 {
         let mut cheat_done: HashSet<(usize, usize)> = HashSet::new();
         run_savings += find_land(
             frame,
-            &reference_run.0,
+            &reference_run_map,
             dot.0 as isize,
             dot.1 as isize,
             *dot,
@@ -60,7 +65,7 @@ fn go_over_maze(frame: &Vec<Vec<char>>, diff: i32, max_depth: i32) -> i64 {
 #[allow(clippy::too_many_arguments)]
 fn find_land(
     frame: &Vec<Vec<char>>,
-    reference_run: &Vec<(usize, usize, i32)>,
+    reference_run_map: &HashMap<(usize, usize), i32>,
     ny: isize,
     nx: isize,
     dot: (usize, usize, i32),
@@ -70,11 +75,7 @@ fn find_land(
     cache: &mut HashSet<(isize, isize, i32)>,
     cheat_done: &mut HashSet<(usize, usize)>,
 ) -> i64 {
-    if depth > max_depth {
-        return 0;
-    }
-
-    if cache.contains(&(ny, nx, depth)) {
+    if depth > max_depth || cache.contains(&(ny, nx, depth)) {
         return 0;
     }
 
@@ -84,15 +85,12 @@ fn find_land(
         let nny = ny + dy;
         let nnx = nx + dx;
 
-        if nnx >= 0 && nny >= 0 && nny < frame.len() as isize && nnx < frame[0].len() as isize {
-            let land: Option<&(usize, usize, i32)> = reference_run
-                .iter()
-                .find(|(ry, rx, _)| *rx == nnx as usize && *ry == nny as usize);
+        if nny >= 0 && nnx >= 0 && (nny as usize) < frame.len() && (nnx as usize) < frame[0].len() {
+            let key = (nny as usize, nnx as usize);
 
-            if let Some(land) = land {
-                let distance = land.2 - (depth + dot.2);
-                if distance >= diff && !cheat_done.contains(&(land.0, land.1)) {
-                    cheat_done.insert((land.0, land.1));
+            if let Some(&distance) = reference_run_map.get(&key) {
+                if distance - (depth + dot.2) >= diff && !cheat_done.contains(&key) {
+                    cheat_done.insert(key);
                     run_savings += 1;
                 }
             } else {
@@ -100,7 +98,7 @@ fn find_land(
             }
             run_savings += find_land(
                 frame,
-                reference_run,
+                reference_run_map,
                 nny,
                 nnx,
                 dot,
@@ -296,8 +294,6 @@ mod tests {
             ],
         ];
 
-        // let answer = go_over_maze(&frame, 58, 20);
-        // assert_eq!(answer, 154);
         let answer = go_over_maze(&frame, 50, 20);
         assert_eq!(answer, 285);
     }

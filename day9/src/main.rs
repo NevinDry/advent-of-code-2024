@@ -12,14 +12,14 @@ fn main() {
     let first_input = unravel_disk_map(&input);
     let moved_blocks = move_blocks(first_input);
     let answer = calculate_checksum(moved_blocks);
-    println!("First star answer: {}", answer);
+    println!("First Star Answer: {}", answer);
 
     // second star
     let second_input = unravel_disk_map(&input);
     let moved_blocks_compacted: Vec<String> = move_blocks_compacted(second_input);
     let answer = calculate_checksum(moved_blocks_compacted);
 
-    println!("Second star answer: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
 fn get_input_char_from_file(file: &File) -> Vec<char> {

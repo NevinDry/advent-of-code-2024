@@ -10,11 +10,11 @@ fn main() {
 
     // first star
     let answer = get_tokens_price(&mut input, false);
-    println!("First star: {}", answer);
+    println!("First Star Answer: {}", answer);
 
     // second star
     let answer = get_tokens_price(&mut input, true);
-    println!("Second star: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
 fn get_tokens_price(input: &mut Vec<Vec<(i128, i128)>>, is_large: bool) -> i128 {

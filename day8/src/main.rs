@@ -11,11 +11,11 @@ fn main() {
 
     // first star
     let antinodes_count = get_antenas_antinodes_count(&input, false);
-    println!("Answer 1: {:?}", antinodes_count);
+    println!("First Star Answer: {:?}", antinodes_count);
 
     // second star
     let antinodes_count = get_antenas_antinodes_count(&input, true);
-    println!("Answer 2: {:?}", antinodes_count);
+    println!("Second Star Answer: {:?}", antinodes_count);
 }
 
 fn get_antenas_antinodes_count(input: &[Vec<char>], find_resonant: bool) -> u64 {

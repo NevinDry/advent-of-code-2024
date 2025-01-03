@@ -13,12 +13,12 @@ fn main() {
     // first star
     let safe_reports = get_safe_reports(&reports);
 
-    println!("Answer 1: {:?}", safe_reports.len());
+    println!("First Star Answer: {:?}", safe_reports.len());
 
     // second star
     let safe_reports_with_dampener = get_safe_reports_with_dampener(&reports);
 
-    println!("Answer 2: {:?}", safe_reports_with_dampener.len());
+    println!("Second Star Answer: {:?}", safe_reports_with_dampener.len());
 }
 
 fn get_reports_from_file(file: &File) -> Vec<Vec<i32>> {

@@ -11,12 +11,12 @@ fn main() {
     // first star
     let trailheads = test_get_trailheads(&input);
     let answers = find_trails_score(&input, trailheads);
-    println!("First star: {}", answers);
+    println!("First Star Answer: {}", answers);
 
     // second star
     let trailheads = test_get_trailheads(&input);
     let answers = find_all_trails_score(&input, trailheads);
-    println!("Second star: {}", answers);
+    println!("Second Star Answer: {}", answers);
 }
 
 fn find_trails_score(input: &Vec<Vec<usize>>, trails_head: Vec<(usize, usize)>) -> i32 {

@@ -10,13 +10,13 @@ fn main() {
 
     // first star
     let answer = perform_fish_duty(&mut frame, &moves);
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 
     // second star
     let file = File::open(path).expect("Error opening file");
     let (mut frame, moves) = get_input_doubled_from_file(&file);
     let answer = perform_fish_duty_doubled(&mut frame, &moves);
-    println!("Answer 2: {:?}", answer);
+    println!("Second Star Answer: {:?}", answer);
 }
 
 fn perform_fish_duty(frame: &mut [Vec<char>], moves: &Vec<char>) -> i32 {
