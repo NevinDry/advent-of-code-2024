@@ -2,13 +2,15 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufRead};
 
+// Puzzle at : https://adventofcode.com/2024/day/19
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
     let (patterns, available_colors) = get_input_from_file(&file);
     // first star
     let mut answer = 0;
-    let mut cache: &mut HashMap<String, bool> = &mut HashMap::new();
+    let cache: &mut HashMap<String, bool> = &mut HashMap::new();
     for pattern in patterns.clone() {
         let mut available_colors_cloned = available_colors.clone();
         let possible = can_form_pattern(pattern, &mut available_colors_cloned, cache);
@@ -16,18 +18,18 @@ fn main() {
             answer += 1;
         }
     }
-    println!("Answer 1: {}", answer);
+    println!("First Star Answer: {}", answer);
 
     // second star
     let mut answer = 0;
-    let mut cache: &mut HashMap<String, usize> = &mut HashMap::new();
+    let cache: &mut HashMap<String, usize> = &mut HashMap::new();
     for pattern in patterns {
         let mut available_colors_cloned = available_colors.clone();
         let possibilities = pattern_possibilities(pattern, &mut available_colors_cloned, cache);
         answer += possibilities;
     }
 
-    println!("Answer 2: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
 fn can_form_pattern(
@@ -43,15 +45,15 @@ fn can_form_pattern(
     }
     for index in 0..available_colors.len() {
         let color = &available_colors[index];
-        if pattern.starts_with(color) {
-            if can_form_pattern(
+        if pattern.starts_with(color)
+            && can_form_pattern(
                 pattern.strip_prefix(color).unwrap().to_string(),
                 available_colors,
                 cache,
-            ) {
-                cache.insert(pattern.to_string(), true);
-                return true;
-            }
+            )
+        {
+            cache.insert(pattern.to_string(), true);
+            return true;
         }
     }
     cache.insert(pattern.to_string(), false);
@@ -132,7 +134,7 @@ mod tests {
         ];
 
         let mut result = 0;
-        let mut cache: &mut HashMap<String, bool> = &mut HashMap::new();
+        let cache: &mut HashMap<String, bool> = &mut HashMap::new();
         for pattern in patterns {
             let mut available_colors_cloned = available_colors.clone();
             let possible = can_form_pattern(pattern, &mut available_colors_cloned, cache);

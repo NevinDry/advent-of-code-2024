@@ -3,19 +3,21 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::vec;
 
+// Puzzle at : https://adventofcode.com/2024/day/21
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
 
-    let mut codes = get_input_from_file(&file);
+    let codes = get_input_from_file(&file);
 
     // first star
     let answer = perform_codes(codes.clone(), 2);
-    println!("First star answer : {:?}", answer);
+    println!("First Star Answer : {:?}", answer);
 
     // second star
     let answer = perform_codes(codes, 25);
-    println!("Second star answer : {:?}", answer);
+    println!("Second Star Answer : {:?}", answer);
 }
 
 fn wrap_moves(
@@ -60,9 +62,7 @@ fn wrap_moves(
             let vertical_move = current_position.0 - target.0;
             let horizontal_move = current_position.1 - target.1;
 
-            if vertical_move == 0 || horizontal_move == 0 {
-                result += wrap_moves(vertical_move, horizontal_move, depth - 1, false, cache)
-            } else if target == (1, 0) && current_position.0 == 0 {
+            if target == (1, 0) && current_position.0 == 0 {
                 result += wrap_moves(vertical_move, horizontal_move, depth - 1, false, cache)
             } else if current_position == (1, 0) && target.0 == 0 {
                 result += wrap_moves(vertical_move, horizontal_move, depth - 1, true, cache)

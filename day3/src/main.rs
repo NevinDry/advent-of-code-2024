@@ -19,13 +19,13 @@ fn main() {
     let regex = regex::Regex::new(MUL_REGEX).unwrap();
     let cleaned_input = get_vec_cleaned_input(&input, regex);
     let answer: i32 = multiply_cleaned_input(cleaned_input);
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 
     // second star
     let regex = regex::Regex::new(MUL_REGEX_WITH_STATEMENTS).unwrap();
     let cleaned_input = get_vec_cleaned_input(&input, regex);
     let answer = multiply_cleaned_input_with_statements(cleaned_input);
-    println!("Answer 2: {:?}", answer);
+    println!("Second Star Answer: {:?}", answer);
 }
 
 fn get_vec_cleaned_input(input: &str, regex: Regex) -> Vec<&str> {
@@ -98,7 +98,7 @@ mod tests {
     fn test_first_star_sample() {
         let input = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
         let regex = regex::Regex::new(MUL_REGEX).unwrap();
-        let cleaned_input = super::get_vec_cleaned_input(&input, regex);
+        let cleaned_input = super::get_vec_cleaned_input(input, regex);
         let answer = super::multiply_cleaned_input(cleaned_input);
         assert_eq!(answer, 161);
     }
@@ -107,7 +107,7 @@ mod tests {
     fn test_second_star_sample() {
         let input = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
         let regex = regex::Regex::new(MUL_REGEX_WITH_STATEMENTS).unwrap();
-        let cleaned_input = super::get_vec_cleaned_input(&input, regex);
+        let cleaned_input = super::get_vec_cleaned_input(input, regex);
         let answer = super::multiply_cleaned_input_with_statements(cleaned_input);
         assert_eq!(answer, 48);
     }

@@ -3,6 +3,8 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::vec;
 
+// Puzzle at : https://adventofcode.com/2024/day/22
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -11,10 +13,10 @@ fn main() {
 
     // first star
     let answer = perform_secret_numbers(buyers, 2000);
-    println!("First star answer : {:?}", answer.0);
+    println!("First Star Answer : {:?}", answer.0);
 
     // first star
-    println!("Second star answer : {:?}", answer.1);
+    println!("Second Star Answer : {:?}", answer.1);
 }
 
 fn perform_secret_numbers(input: Vec<i64>, depth: i64) -> (i64, isize) {
@@ -84,8 +86,8 @@ fn perform_secret_number(secret_number: i64, depth: i64) -> (i64, Vec<usize>) {
 fn perform_operations(secret_number: i64) -> i64 {
     let first = first_operation(secret_number);
     let second = second_operation(first);
-    let third = third_operation(second);
-    third
+
+    third_operation(second)
 }
 
 fn first_operation(secret_number: i64) -> i64 {
@@ -101,13 +103,11 @@ fn third_operation(secret_number: i64) -> i64 {
 }
 
 fn mix(secret_number: i64, value: i64) -> i64 {
-    let res = secret_number ^ value;
-    res
+    secret_number ^ value
 }
 
 fn prune(secret_number: i64) -> i64 {
-    let res = secret_number % 16777216;
-    res
+    secret_number % 16777216
 }
 
 fn get_input_from_file(file: &File) -> Vec<i64> {

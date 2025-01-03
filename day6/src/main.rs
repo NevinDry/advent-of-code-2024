@@ -1,6 +1,9 @@
 use std::collections::HashSet;
 use std::fs::File;
 use std::io::{self, BufRead, Error};
+
+// Puzzle at : https://adventofcode.com/2024/day/6
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -9,16 +12,13 @@ fn main() {
 
     // first star
     let answer = get_guard_duty(&mut lines_vec);
-    println!("Answer 1: {:?}", answer);
+    println!("First Star Answer: {:?}", answer);
 
     // second star
     let answer = get_guard_duty_infini_loop(&mut lines_vec_clone);
-    println!("Answer 2: {:?}", answer);
+    println!("Second Star Answer: {:?}", answer);
 }
 
-/// First Star (Perform the guard duty)
-/// Move depending on obstacle and direction
-/// If we reach the end of the board, we calculate the number of X
 fn get_guard_duty(lines_vec: &mut Vec<Vec<char>>) -> i32 {
     let starting_point = lines_vec
         .iter()
@@ -86,21 +86,16 @@ fn perform_duty(
         lines_vec[i][j] = 'X';
         Ok(lines_vec.clone())
     } else {
-        // Check if we are stuck in an infinite loop
         let current_position = format!("{}-{}{}", i, j, lines_vec[i][j]);
         if saved_positions.contains(&current_position) {
             return Err(Error::new(io::ErrorKind::Other, "Infinite loop detected"));
         }
         saved_positions.insert(current_position);
 
-        // Recursive call to perform all the duty
         perform_duty(lines_vec, (i, j), saved_positions)
     }
 }
 
-/// Second Start (Infinite loop) - reusing the same function as the first star
-/// Ugly solution, but it works, we try a guard duty with every new obstacle possible.
-/// If we detect an infinite loop wuth the given obstacle, we increment the infinite_guard_count
 fn get_guard_duty_infini_loop(lines_vec: &mut Vec<Vec<char>>) -> i32 {
     let mut infinite_guard_count = 0;
     let starting_point = lines_vec
@@ -112,7 +107,6 @@ fn get_guard_duty_infini_loop(lines_vec: &mut Vec<Vec<char>>) -> i32 {
     let original_lines_vec = lines_vec.clone();
     let mut saved_positions = HashSet::new();
     saved_positions.insert(format!("{}-{}^", starting_point.0, starting_point.1));
-    println!("Starting exploring possibilities....");
 
     let mut i = 0;
     while i < lines_vec.len() {
@@ -121,13 +115,10 @@ fn get_guard_duty_infini_loop(lines_vec: &mut Vec<Vec<char>>) -> i32 {
             if lines_vec[i][j] == '.' {
                 lines_vec[i][j] = '#';
 
-                // Perform the duty and catch infinite loop
                 if perform_duty(lines_vec, starting_point, &mut saved_positions).is_err() {
                     infinite_guard_count += 1;
-                    println!("loop detected: {:?}", infinite_guard_count);
                 }
 
-                // Reset the board
                 lines_vec[i][j] = '.';
                 saved_positions = HashSet::new();
                 saved_positions.insert(format!("{}-{}^", starting_point.0, starting_point.1));
@@ -141,7 +132,6 @@ fn get_guard_duty_infini_loop(lines_vec: &mut Vec<Vec<char>>) -> i32 {
     infinite_guard_count
 }
 
-// Directional functions
 fn can_right_move(lines_vec: &[Vec<char>], i: usize, j: usize) -> bool {
     if lines_vec[i][j + 1] == '.' || lines_vec[i][j + 1] == 'X' {
         return true;

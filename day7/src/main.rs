@@ -2,6 +2,9 @@ use itertools::Itertools;
 use std::fmt::Error;
 use std::fs::File;
 use std::io::{self, BufRead};
+
+// Puzzle at : https://adventofcode.com/2024/day/7
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -9,17 +12,14 @@ fn main() {
 
     // first star
     let anwser = get_valid_operations_sum(&result_and_numbers, vec!["+", "*"]);
-    println!("Answer 1: {:?}", anwser);
+    println!("First Star Answer: {:?}", anwser);
 
     // second star
     let anwser = get_valid_operations_sum(&result_and_numbers, vec!["+", "*", "||"]);
-    println!("Answer 2: {:?}", anwser);
+    println!("Second Star Answer: {:?}", anwser);
 }
 
-fn get_valid_operations_sum(
-    result_and_numbers: &Vec<(u64, Vec<u16>)>,
-    operators: Vec<&str>,
-) -> u64 {
+fn get_valid_operations_sum(result_and_numbers: &[(u64, Vec<u16>)], operators: Vec<&str>) -> u64 {
     let mut valid_operation_sum = 0;
 
     result_and_numbers.iter().for_each(|(result, numbers)| {
@@ -37,12 +37,8 @@ fn get_valid_operations_sum(
     valid_operation_sum
 }
 
-fn operation_is_valid(
-    result: &u64,
-    numbers: &Vec<u16>,
-    operators: Vec<&str>,
-) -> Result<bool, Error> {
-    (0..numbers.len() - 1)
+fn operation_is_valid(result: &u64, numbers: &[u16], operators: Vec<&str>) -> Result<bool, Error> {
+    if (0..numbers.len() - 1)
         .map(|_| operators.clone())
         .multi_cartesian_product()
         .any(|operators_permutation| {
@@ -62,24 +58,23 @@ fn operation_is_valid(
             }
             operation_result == *result
         })
-        .then(|| Ok(true))
-        .unwrap_or(Ok(false))
+    {
+        Ok(true)
+    } else {
+        Ok(false)
+    }
 }
 
 fn get_operations_from_file(file: &File) -> Vec<(u64, Vec<u16>)> {
     let mut operations_results: Vec<(u64, Vec<u16>)> = Vec::new();
     let reader = io::BufReader::new(file);
     for line in reader.lines() {
-        if let Ok(line_content) = line {
-            if let Some((before_colon, after_colon)) = line_content.split_once(':') {
-                if let Ok(first_number) = before_colon.trim().parse::<u64>() {
-                    let second_numbers = after_colon
-                        .split_whitespace()
-                        .filter_map(|num| num.parse::<u16>().ok())
-                        .collect::<Vec<u16>>();
-                    operations_results.push((first_number, second_numbers));
-                }
-            }
+        if let Some((before_colon, after_colon)) = line.unwrap().split_once(':') {
+            let second_numbers = after_colon
+                .split_whitespace()
+                .filter_map(|num| num.parse::<u16>().ok())
+                .collect::<Vec<u16>>();
+            operations_results.push((before_colon.trim().parse::<u64>().unwrap(), second_numbers));
         }
     }
     operations_results

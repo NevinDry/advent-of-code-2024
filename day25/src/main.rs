@@ -1,5 +1,8 @@
 use std::fs::File;
 use std::io::{self, BufRead};
+
+// Puzzle at : https://adventofcode.com/2024/day/25
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -10,7 +13,7 @@ fn main() {
     let keys = prepare_input(keys);
     let locks = prepare_input(locks);
     let answer = try_keys(&keys, &locks);
-    println!("Answer 1 {:?}", answer);
+    println!("First Star Answer {:?}", answer);
 }
 
 fn try_keys(
@@ -37,11 +40,11 @@ fn try_keys(
 
 fn prepare_input(input: Vec<Vec<Vec<char>>>) -> Vec<(usize, usize, usize, usize, usize)> {
     let mut output = Vec::new();
-    for mut element in input {
+    for element in input {
         let mut sequence = (0, 0, 0, 0, 0);
-        for y in 0..element.len() {
-            for x in 0..element[y].len() {
-                if element[y][x] == '#' {
+        for yitem in &element {
+            for (x, xitem) in yitem.iter().enumerate() {
+                if *xitem == '#' {
                     match x {
                         0 => sequence.0 += 1,
                         1 => sequence.1 += 1,
@@ -58,6 +61,7 @@ fn prepare_input(input: Vec<Vec<Vec<char>>>) -> Vec<(usize, usize, usize, usize,
     output
 }
 
+#[allow(clippy::type_complexity)]
 fn get_input_from_file(file: &File) -> (Vec<Vec<Vec<char>>>, Vec<Vec<Vec<char>>>) {
     let mut keys = Vec::new();
     let mut locks = Vec::new();
@@ -133,9 +137,6 @@ mod tests {
 
         let keys = prepare_input(keys);
         let locks = prepare_input(locks);
-
-        println!("{:?}", keys);
-        println!("{:?}", locks);
 
         let result = try_keys(&keys, &locks);
         assert_eq!(result, 3);

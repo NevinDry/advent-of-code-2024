@@ -1,18 +1,20 @@
 use std::collections::HashMap;
 
+// Puzzle at : https://adventofcode.com/2024/day/11
+
 fn main() {
     let input = "4610211 4 0 59 3907 201586 929 33750"
         .split_whitespace()
         .map(|digit| digit.parse::<u128>().unwrap())
         .collect::<Vec<u128>>();
     let answer = blinks(&input, 25);
-    println!("First star answer {:?}", answer);
+    println!("First Star Answer {:?}", answer);
 
     let answer: u128 = blinks(&input, 75);
-    println!("Second star answer {:?}", answer);
+    println!("Second Star Answer {:?}", answer);
 }
 
-fn blinks(input: &Vec<u128>, times: u32) -> u128 {
+fn blinks(input: &[u128], times: u32) -> u128 {
     let mut cache: HashMap<(u128, u32), u128> = HashMap::new();
     input
         .iter()
@@ -46,7 +48,6 @@ fn blink(stone: u128, index: u32, cache: &mut HashMap<(u128, u32), u128>) -> u12
 
 #[cfg(test)]
 mod tests {
-    use std::any;
 
     #[test]
     fn test_basic_blinks() {

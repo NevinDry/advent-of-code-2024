@@ -1,7 +1,9 @@
-use std::collections::HashMap;
+use std::cmp::Reverse;
+use std::collections::{BinaryHeap, HashMap};
 use std::fs::File;
-use std::i32;
 use std::io::{self, BufRead};
+
+// Puzzle at : https://adventofcode.com/2024/day/16
 
 const DIRECTIONS: [(isize, isize); 4] = [(-1, 0), (0, 1), (1, 0), (0, -1)];
 
@@ -12,14 +14,15 @@ fn main() {
 
     // first star
     let answer = go_over_maze(&frame);
-    println!("First star answer: {}", answer.0);
+    println!("First Star Answer: {}", answer.0);
 
     // second star
     let answer = find_best_spots(answer);
-    println!("Second star answer: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
-fn go_over_maze(frame: &Vec<Vec<char>>) -> (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>) {
+#[allow(clippy::type_complexity)]
+fn go_over_maze(frame: &[Vec<char>]) -> (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>) {
     let start = (frame.len() - 2, 1);
     assert_eq!(frame[start.0][start.1], 'S');
     let end = (1, frame[0].len() - 2);
@@ -30,6 +33,7 @@ fn go_over_maze(frame: &Vec<Vec<char>>) -> (i32, Vec<(Vec<(usize, usize, i32)>, 
     (maze_runs.iter().min_by_key(|x| x.1).unwrap().1, maze_runs)
 }
 
+#[allow(clippy::type_complexity)]
 fn find_best_spots(min_and_maze_runs: (i32, Vec<(Vec<(usize, usize, i32)>, i32, usize)>)) -> i32 {
     let mut best_spots = min_and_maze_runs
         .1
@@ -44,30 +48,31 @@ fn find_best_spots(min_and_maze_runs: (i32, Vec<(Vec<(usize, usize, i32)>, i32, 
     best_spots.len() as i32
 }
 
+#[allow(clippy::type_complexity)]
 fn get_maze_runs(
-    frame: &Vec<Vec<char>>,
+    frame: &[Vec<char>],
     start: (usize, usize),
     end: (usize, usize),
 ) -> Vec<(Vec<(usize, usize, i32)>, i32, usize)> {
+    let mut priority_queue = BinaryHeap::new();
+    let mut cache: HashMap<((usize, usize), usize), i32> = HashMap::new();
     let mut maze_runs = vec![];
     let mut min_cost = i32::MAX;
 
-    let mut curent_runs: Vec<(Vec<(usize, usize, i32)>, i32, usize)> = vec![];
-    let mut cache: HashMap<((usize, usize), usize), i32> = HashMap::new();
-
     for dir in 0..4 {
         let turn_cost = if dir == 1 { 0 } else { 1000 };
-        curent_runs.push((vec![(start.0, start.1, turn_cost)], turn_cost, dir));
+        let initial_path = vec![(start.0, start.1, turn_cost)];
+        priority_queue.push(Reverse((turn_cost, start, dir, initial_path)));
     }
 
-    while let Some((current_path, current_cost, direction)) = curent_runs.pop() {
-        let (x, y, _cost) = *current_path.last().unwrap();
+    while let Some(Reverse((current_cost, (x, y), direction, current_path))) = priority_queue.pop()
+    {
         if current_cost > min_cost {
             continue;
         }
         if (x, y) == end {
             min_cost = min_cost.min(current_cost);
-            maze_runs.push((current_path, current_cost, direction));
+            maze_runs.push((current_path.clone(), current_cost, direction));
             continue;
         }
 
@@ -88,14 +93,16 @@ fn get_maze_runs(
                     let turn_cost = if new_dir == direction { 0 } else { 1000 };
                     let move_cost = 1;
                     let total_cost = current_cost + turn_cost + move_cost;
+
                     if let Some(&cached_cost) = cache.get(&((nx, ny), new_dir)) {
                         if total_cost > cached_cost {
                             continue;
                         }
                     }
+
                     let mut new_path = current_path.clone();
                     new_path.push((nx, ny, turn_cost + move_cost));
-                    curent_runs.push((new_path, total_cost, new_dir));
+                    priority_queue.push(Reverse((total_cost, (nx, ny), new_dir, new_path)));
                 }
             }
         }

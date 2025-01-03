@@ -2,6 +2,8 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead};
 
+// Puzzle at : https://adventofcode.com/2024/day/24
+
 #[derive(Debug, Clone)]
 struct Gate {
     input1: String,
@@ -25,11 +27,11 @@ fn main() {
 
     // first star
     let answer = open_the_gates(values, gates.clone());
-    println!("First star answer : {:?}", answer);
+    println!("First Star Answer : {:?}", answer);
 
     // second star
     let answer: String = find_swapped_gates(&gates, "z45".to_string());
-    println!("Second star answer : {:?}", answer);
+    println!("Second Star Answer : {:?}", answer);
 }
 
 fn find_swapped_gates(gates: &[Gate], max_gate: String) -> String {
@@ -67,10 +69,8 @@ fn find_swapped_gates(gates: &[Gate], max_gate: String) -> String {
                     {
                         swapped.insert(gate.output.clone());
                     }
-                } else {
-                    if !gate.output.starts_with('z') {
-                        swapped.insert(gate.output.clone());
-                    }
+                } else if !gate.output.starts_with('z') {
+                    swapped.insert(gate.output.clone());
                 }
             }
         }
@@ -85,7 +85,7 @@ fn open_the_gates(values: HashMap<String, usize>, gates: Vec<Gate>) -> usize {
     let mut gates = gates;
     let mut index = 0;
     loop {
-        if gates.len() == 0 {
+        if gates.is_empty() {
             break;
         }
         let gate = &gates[index];
@@ -114,7 +114,6 @@ fn open_the_gates(values: HashMap<String, usize>, gates: Vec<Gate>) -> usize {
     z.sort_by_key(|(key, _)| std::cmp::Reverse((*key).clone()));
 
     let concat_num: String = z.iter().map(|(_, value)| value.to_string()).collect();
-    println!("Concatenated values: {}", concat_num);
     usize::from_str_radix(&concat_num, 2).unwrap()
 }
 
@@ -150,7 +149,7 @@ fn get_input_from_file(file: &File) -> (HashMap<String, usize>, Vec<Gate>) {
     let mut first_part = true;
     for line in reader.lines() {
         let line = line.expect("Cannot get line");
-        if line == "" {
+        if line.is_empty() {
             first_part = false;
             continue;
         }

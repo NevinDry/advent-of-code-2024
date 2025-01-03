@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+// Puzzle at : https://adventofcode.com/2024/day/9
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -10,14 +12,14 @@ fn main() {
     let first_input = unravel_disk_map(&input);
     let moved_blocks = move_blocks(first_input);
     let answer = calculate_checksum(moved_blocks);
-    println!("First star answer: {}", answer);
+    println!("First Star Answer: {}", answer);
 
     // second star
     let second_input = unravel_disk_map(&input);
     let moved_blocks_compacted: Vec<String> = move_blocks_compacted(second_input);
     let answer = calculate_checksum(moved_blocks_compacted);
 
-    println!("Second star answer: {}", answer);
+    println!("Second Star Answer: {}", answer);
 }
 
 fn get_input_char_from_file(file: &File) -> Vec<char> {
@@ -49,7 +51,7 @@ fn move_blocks_compacted(mut input: Vec<String>) -> Vec<String> {
         .filter_map(|(i, c)| {
             if c.len() > 1 {
                 Some((c.to_string(), i))
-            } else if c.chars().all(|ch| ch.is_digit(10)) {
+            } else if c.chars().all(|ch| ch.is_ascii_digit()) {
                 Some((c.chars().next().unwrap().to_string(), i))
             } else {
                 None
@@ -90,11 +92,11 @@ fn move_blocks_compacted(mut input: Vec<String>) -> Vec<String> {
         match first_match_index {
             Some(index) => {
                 let first_match: (usize, usize) = dots_vec[index];
-                for a in first_match.0..first_match.0 + file.1 {
-                    input[a] = file.0.to_string();
+                for ia in input.iter_mut().skip(first_match.0).take(file.1) {
+                    *ia = file.0.to_string();
                 }
-                for b in file.2..file.2 + file.1 {
-                    input[b] = ".".to_string();
+                for ib in input.iter_mut().skip(file.2).take(file.1) {
+                    *ib = ".".to_string();
                 }
                 dots_vec.remove(index);
                 if first_match.1 > file.1 {

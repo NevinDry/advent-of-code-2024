@@ -2,12 +2,19 @@
 My attempt to complete the advent of code 2024
 
 
-## Day 1
+## Run all puzzles !
+With cargo/rust setup : 
+```
+make run-all
+```
 
-With rust setup : 
-
+## Run a specific puzzle !
 ```
 cd day1
 cargo run
+```
+
+## Run tests !
+```
 cargo test
 ```

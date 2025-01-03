@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+// Puzzle at : https://adventofcode.com/2024/day/10
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -9,12 +11,12 @@ fn main() {
     // first star
     let trailheads = test_get_trailheads(&input);
     let answers = find_trails_score(&input, trailheads);
-    println!("First star: {}", answers);
+    println!("First Star Answer: {}", answers);
 
     // second star
     let trailheads = test_get_trailheads(&input);
     let answers = find_all_trails_score(&input, trailheads);
-    println!("Second star: {}", answers);
+    println!("Second Star Answer: {}", answers);
 }
 
 fn find_trails_score(input: &Vec<Vec<usize>>, trails_head: Vec<(usize, usize)>) -> i32 {
@@ -76,8 +78,6 @@ fn find_head_score(
                     find_head_score(input, y - 1, x, path_completed);
                 }
             }
-        } else {
-            return;
         }
     }
 }

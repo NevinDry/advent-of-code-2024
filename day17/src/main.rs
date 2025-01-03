@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 
+// Puzzle at : https://adventofcode.com/2024/day/17
+
 enum Opcode {
     Adv,
     Bxl,
@@ -38,14 +40,14 @@ fn main() {
 
     // first star
     let answer = compute(register_a, register_b, register_c, &program);
-    println!("Answer 1 {:?}", answer);
+    println!("First Star Answer {:?}", answer);
 
     // Second star
-    let answer = find_compute(register_a, register_b, register_c, program);
-    println!("Answer 2 {:?}", answer);
+    let answer = find_compute(register_b, register_c, program);
+    println!("Second Star Answer {:?}", answer);
 }
 
-fn find_compute(register_a: i64, register_b: i64, register_c: i64, program: Vec<usize>) -> i64 {
+fn find_compute(register_b: i64, register_c: i64, program: Vec<usize>) -> i64 {
     let target_output: Vec<String> = program.iter().map(|x| x.to_string()).collect();
     let mut coefficients = vec![0; program.len()];
 
@@ -82,49 +84,45 @@ fn compute(
     mut register_a: i64,
     mut register_b: i64,
     mut register_c: i64,
-    program: &Vec<usize>,
+    program: &[usize],
 ) -> String {
     let mut index = 0;
     let mut output = vec![];
-    loop {
-        if let Some(digit) = program.get(index) {
-            let opcode_operande_type = get_opcode_operand_from_usize(*digit);
-            let operand: usize = match opcode_operande_type.1 {
-                OperandType::Literal => program[index + 1],
-                OperandType::Combo => match program[index + 1] {
-                    0 => 0,
-                    1 => 1,
-                    2 => 2,
-                    3 => 3,
-                    4 => register_a,
-                    5 => register_b,
-                    6 => register_c,
-                    _ => panic!("Invalid operand"),
-                }
-                .try_into()
-                .unwrap(),
-            };
-
-            match opcode_operande_type.0 {
-                Opcode::Adv => register_a = register_a / 2usize.pow(operand as u32) as i64,
-                Opcode::Bxl => register_b = register_b ^ operand as i64,
-                Opcode::Bst => register_b = operand as i64 % 8,
-                Opcode::Jnz => {
-                    if register_a != 0 {
-                        index = operand;
-                        continue;
-                    }
-                }
-                Opcode::Bxc => register_b = register_b ^ register_c,
-                Opcode::Out => output.push(operand % 8),
-                Opcode::Bdv => register_b = register_a / 2usize.pow(operand as u32) as i64,
-                Opcode::Cdv => register_c = register_a / 2usize.pow(operand as u32) as i64,
+    while let Some(digit) = program.get(index) {
+        let opcode_operande_type = get_opcode_operand_from_usize(*digit);
+        let operand: usize = match opcode_operande_type.1 {
+            OperandType::Literal => program[index + 1],
+            OperandType::Combo => match program[index + 1] {
+                0 => 0,
+                1 => 1,
+                2 => 2,
+                3 => 3,
+                4 => register_a,
+                5 => register_b,
+                6 => register_c,
+                _ => panic!("Invalid operand"),
             }
+            .try_into()
+            .unwrap(),
+        };
 
-            index += 2;
-        } else {
-            break;
+        match opcode_operande_type.0 {
+            Opcode::Adv => register_a /= 2usize.pow(operand as u32) as i64,
+            Opcode::Bxl => register_b ^= operand as i64,
+            Opcode::Bst => register_b = operand as i64 % 8,
+            Opcode::Jnz => {
+                if register_a != 0 {
+                    index = operand;
+                    continue;
+                }
+            }
+            Opcode::Bxc => register_b ^= register_c,
+            Opcode::Out => output.push(operand % 8),
+            Opcode::Bdv => register_b = register_a / 2usize.pow(operand as u32) as i64,
+            Opcode::Cdv => register_c = register_a / 2usize.pow(operand as u32) as i64,
         }
+
+        index += 2;
     }
 
     output
@@ -201,7 +199,7 @@ mod tests {
         let register_c = 0;
         let program = vec![0, 3, 5, 4, 3, 0];
 
-        let answer = find_compute(register_a, register_b, register_c, program);
+        let answer = find_compute(register_b, register_c, program);
         assert_eq!(answer, 117440);
     }
 }

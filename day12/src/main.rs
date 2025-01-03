@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+// Puzzle at : https://adventofcode.com/2024/day/12
+
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 enum Direction {
     Right,
@@ -18,10 +20,10 @@ fn main() {
 
     // first star
     let region = get_regions(&mut input, false);
-    println!("First star: {}", region);
+    println!("First Star Answer: {}", region);
 
     let region = get_regions(&mut input, true);
-    println!("Second star: {}", region);
+    println!("Second Star Answer: {}", region);
 }
 
 fn get_regions(input: &mut Vec<Vec<char>>, is_discounted: bool) -> i32 {

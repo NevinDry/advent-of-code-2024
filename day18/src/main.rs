@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 
+// Puzzle at : https://adventofcode.com/2024/day/18
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -14,21 +16,24 @@ fn main() {
         .collect::<Vec<_>>();
     let grid = create_grid(&bytes_fallen, 71);
     let answer = find_way_out(&grid);
-    println!("Answer 1: {:?}", answer.0);
+    println!("First Star Answer: {:?}", answer.0);
 
     // second star
     let mut breaker = (0, 0);
     for item in initial_bytes_fallen.iter().skip(12) {
-        bytes_fallen.push(item.clone());
+        bytes_fallen.push(*item);
         let grid = create_grid(&bytes_fallen, 71);
         let answer = find_way_out(&grid);
-        if answer.1 == false {
-            breaker = item.clone();
+        if !answer.1 {
+            breaker = *item;
             break;
         }
     }
 
-    println!("Answer 2: {:?}", breaker);
+    println!(
+        "Second Star Answer: {:?}",
+        format!("{},{}", breaker.0, breaker.1)
+    );
 }
 
 fn find_way_out(grid: &[Vec<char>]) -> (usize, bool) {
@@ -139,7 +144,6 @@ mod tests {
         let grid = create_grid(&bytes_fallen, 7);
         let answer = find_way_out(&grid);
 
-        println!("{:?}", answer);
         assert_eq!(answer.0, 22);
     }
 
@@ -184,13 +188,11 @@ mod tests {
             bytes_fallen.push(initial_bytes_fallen[i]);
             let grid = create_grid(&bytes_fallen, 7);
             let answer = find_way_out(&grid);
-            if answer.1 == false {
+            if !answer.1 {
                 breaker = initial_bytes_fallen[i];
                 break;
             }
         }
-
-        println!("{:?}", breaker);
         assert_eq!(breaker, (6, 1));
     }
 }
