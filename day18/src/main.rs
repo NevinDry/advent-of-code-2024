@@ -30,7 +30,10 @@ fn main() {
         }
     }
 
-    println!("Second Star Answer: {:?}", breaker);
+    println!(
+        "Second Star Answer: {:?}",
+        format!("{},{}", breaker.0, breaker.1)
+    );
 }
 
 fn find_way_out(grid: &[Vec<char>]) -> (usize, bool) {
