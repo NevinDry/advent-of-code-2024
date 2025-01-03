@@ -1,8 +1,8 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Gate {
     input1: String,
     input2: String,
@@ -10,7 +10,7 @@ struct Gate {
     output: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
 enum Operation {
     And,
     Or,
@@ -24,8 +24,60 @@ fn main() {
     let (values, gates) = get_input_from_file(&file);
 
     // first star
-    let answer = open_the_gates(values, gates);
+    let answer = open_the_gates(values, gates.clone());
     println!("First star answer : {:?}", answer);
+
+    // second star
+    let answer: String = find_swapped_gates(&gates, "z45".to_string());
+    println!("Second star answer : {:?}", answer);
+}
+
+fn find_swapped_gates(gates: &[Gate], max_gate: String) -> String {
+    let mut swapped = HashSet::new();
+    let mut existing_operations = HashSet::new();
+
+    for gate in gates {
+        existing_operations.insert((gate.input1.clone(), gate.operation.clone()));
+        existing_operations.insert((gate.input2.clone(), gate.operation.clone()));
+    }
+
+    for gate in gates {
+        match gate.operation {
+            Operation::And => {
+                if gate.input1 != "x00"
+                    && gate.input2 != "x00"
+                    && !existing_operations.contains(&(gate.output.clone(), Operation::Or))
+                {
+                    swapped.insert(gate.output.clone());
+                }
+            }
+            Operation::Or => {
+                if gate.output.starts_with('z') && gate.output != max_gate {
+                    swapped.insert(gate.output.clone());
+                }
+                if existing_operations.contains(&(gate.output.clone(), Operation::Or)) {
+                    swapped.insert(gate.output.clone());
+                }
+            }
+            Operation::Xor => {
+                if gate.input1.starts_with('x') || gate.input2.starts_with('x') {
+                    if gate.input1 != "x00"
+                        && gate.input2 != "x00"
+                        && !existing_operations.contains(&(gate.output.clone(), Operation::Xor))
+                    {
+                        swapped.insert(gate.output.clone());
+                    }
+                } else {
+                    if !gate.output.starts_with('z') {
+                        swapped.insert(gate.output.clone());
+                    }
+                }
+            }
+        }
+    }
+    let mut result: Vec<String> = swapped.into_iter().collect();
+    result.sort();
+    result.join(",")
 }
 
 fn open_the_gates(values: HashMap<String, usize>, gates: Vec<Gate>) -> usize {
