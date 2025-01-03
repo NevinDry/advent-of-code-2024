@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+// Puzzle at : https://adventofcode.com/2024/day/11
+
 fn main() {
     let input = "4610211 4 0 59 3907 201586 929 33750"
         .split_whitespace()

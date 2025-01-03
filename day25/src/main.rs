@@ -1,5 +1,8 @@
 use std::fs::File;
 use std::io::{self, BufRead};
+
+// Puzzle at : https://adventofcode.com/2024/day/25
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");
@@ -134,9 +137,6 @@ mod tests {
 
         let keys = prepare_input(keys);
         let locks = prepare_input(locks);
-
-        println!("{:?}", keys);
-        println!("{:?}", locks);
 
         let result = try_keys(&keys, &locks);
         assert_eq!(result, 3);

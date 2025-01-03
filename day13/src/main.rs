@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+// Puzzle at : https://adventofcode.com/2024/day/13
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");

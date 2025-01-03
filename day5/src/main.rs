@@ -3,6 +3,8 @@ use std::io::{self, BufRead};
 
 use itertools::Itertools;
 
+// Puzzle at : https://adventofcode.com/2024/day/5
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");

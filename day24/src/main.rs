@@ -2,6 +2,8 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead};
 
+// Puzzle at : https://adventofcode.com/2024/day/24
+
 #[derive(Debug, Clone)]
 struct Gate {
     input1: String,

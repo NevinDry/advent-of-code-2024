@@ -3,6 +3,8 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::vec;
 
+// Puzzle at : https://adventofcode.com/2024/day/21
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");

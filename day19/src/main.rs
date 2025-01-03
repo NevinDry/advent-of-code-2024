@@ -2,6 +2,8 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufRead};
 
+// Puzzle at : https://adventofcode.com/2024/day/19
+
 fn main() {
     let path = "./src/data.txt";
     let file = File::open(path).expect("Error opening file");

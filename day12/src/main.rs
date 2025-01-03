@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+// Puzzle at : https://adventofcode.com/2024/day/12
+
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 enum Direction {
     Right,
